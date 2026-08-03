@@ -1,0 +1,417 @@
+<title>JV3 — Member Cost Schedule · France · ~100MW firm + options</title>
+<style>
+  :root{
+    --paper:#ECEEEF; --paper-2:#E3E6E7; --ink:#10151C; --slate:#1A232C; --slate-2:#243039;
+    --steel:#5E6B77; --steel-light:#8A97A2; --line:#D3D7DA; --line-dark:#33414C;
+    --copper:#BE7233; --copper-bright:#D89154; --copper-wash:#FBF3EA; --offwhite:#E9EBED;
+    --gb:#8A97A2; --vr72:#7A5A3C; --vr576:#BE7233;
+    --grotesk:-apple-system,BlinkMacSystemFont,"Segoe UI","Helvetica Neue",Arial,sans-serif;
+    --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+    --mono:ui-monospace,"SF Mono","Cascadia Code","Consolas",monospace;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--grotesk);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 28px;}
+  .eyebrow{font-family:var(--mono);font-size:0.7rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--copper);margin:0 0 14px;display:flex;align-items:center;gap:10px;}
+  .eyebrow::after{content:"";height:1px;flex:1;background:var(--line);}
+
+  .band{background:var(--slate);color:var(--offwhite);
+    background-image:linear-gradient(transparent 0 calc(100% - 1px),rgba(255,255,255,0.04) calc(100% - 1px)),linear-gradient(90deg,transparent 0 calc(100% - 1px),rgba(255,255,255,0.04) calc(100% - 1px));
+    background-size:100% 34px,34px 100%;border-bottom:2px solid var(--copper);}
+  .band .wrap{padding-top:46px;padding-bottom:40px;}
+  .kicker{font-family:var(--mono);font-size:0.72rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--steel-light);margin:0 0 18px;}
+  h1{font-weight:650;font-size:clamp(2rem,5vw,3.1rem);line-height:1.03;letter-spacing:-0.02em;margin:0;text-wrap:balance;}
+  h1 .hl{color:var(--copper-bright);}
+  .thesis{font-family:var(--serif);font-size:clamp(1.12rem,2.4vw,1.5rem);line-height:1.42;color:#C9CFD4;max-width:52ch;margin:18px 0 0;font-style:italic;}
+  .metrics{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--line-dark);border:1px solid var(--line-dark);margin-top:34px;}
+  .metric{background:var(--slate-2);padding:16px 16px 14px;}
+  .metric .v{font-family:var(--mono);font-size:clamp(1.2rem,2.8vw,1.75rem);font-weight:600;letter-spacing:-0.01em;color:#fff;font-variant-numeric:tabular-nums;line-height:1;}
+  .metric .v .u{color:var(--copper-bright);font-size:0.6em;}
+  .metric .k{font-family:var(--mono);font-size:0.6rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--steel-light);margin-top:8px;}
+
+  section{padding:44px 0;border-bottom:1px solid var(--line);}
+  section:last-of-type{border-bottom:0;}
+  h2{font-size:1.4rem;font-weight:640;letter-spacing:-0.015em;margin:0 0 6px;text-wrap:balance;}
+  .lede{font-family:var(--serif);font-size:1.06rem;line-height:1.5;color:#2c353d;max-width:66ch;margin:0 0 24px;}
+  p{max-width:66ch;} .muted{color:var(--steel);}
+
+  /* what-it-is bullets */
+  .facts{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:8px;}
+  .fact{border-left:2px solid var(--copper);padding:2px 0 2px 16px;}
+  .fact .t{font-weight:640;font-size:0.95rem;margin-bottom:3px;}
+  .fact .d{font-size:0.88rem;color:var(--steel);}
+
+  /* tables */
+  .tbl-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+  table{border-collapse:collapse;width:100%;font-size:0.88rem;min-width:640px;}
+  th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top;}
+  th{font-family:var(--mono);font-size:0.62rem;letter-spacing:0.06em;text-transform:uppercase;color:var(--steel);font-weight:600;border-bottom:1px solid var(--ink);}
+  td.num,th.num{font-family:var(--mono);font-variant-numeric:tabular-nums;text-align:right;}
+  tr td:first-child{font-weight:560;}
+  tbody tr.gb td:first-child{border-left:3px solid var(--gb);}
+  tbody tr.v72 td:first-child{border-left:3px solid var(--vr72);}
+  tbody tr.v576 td:first-child{border-left:3px solid var(--vr576);}
+  tfoot td{font-weight:680;border-top:2px solid var(--ink);border-bottom:0;background:var(--paper-2);}
+  .dollar{color:var(--copper);font-weight:640;}
+  .pill{font-family:var(--mono);font-size:0.58rem;letter-spacing:0.04em;text-transform:uppercase;padding:2px 6px;display:inline-block;}
+  .pill.gb{background:#eceef0;color:#4a5560;} .pill.v72{background:#efe3d6;color:#7a5a3c;} .pill.v576{background:var(--copper);color:#fff;}
+
+  /* unit-economics strip */
+  .units{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:8px;}
+  .unit{border:1px solid var(--line);background:#fff;padding:16px;}
+  .unit .ph{font-weight:640;font-size:0.98rem;} .unit .sub{font-family:var(--mono);font-size:0.64rem;letter-spacing:0.06em;text-transform:uppercase;color:var(--steel-light);margin-top:2px;}
+  .unit .grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px 12px;margin-top:14px;font-family:var(--mono);font-size:0.8rem;}
+  .unit .grid2 .lab{color:var(--steel);font-size:0.62rem;letter-spacing:0.04em;text-transform:uppercase;}
+  .unit .big{color:var(--copper);font-weight:600;font-size:1.15rem;}
+  .rackbar{height:7px;background:var(--paper-2);margin-top:14px;} .rackbar i{display:block;height:100%;background:var(--copper);}
+
+  /* responsibilities */
+  .resp{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line);}
+  .resp > div{background:#fff;padding:20px;}
+  .resp .jv{background:var(--slate);color:var(--offwhite);}
+  .resp h3{font-family:var(--mono);font-size:0.68rem;letter-spacing:0.1em;text-transform:uppercase;margin:0 0 14px;}
+  .resp .jv h3{color:var(--copper-bright);} .resp .lab h3{color:var(--copper);}
+  .resp ul{margin:0;padding-left:18px;font-size:0.9rem;} .resp li{margin-bottom:8px;}
+  .resp .jv li::marker{color:var(--copper-bright);}
+
+  /* capital stack */
+  .cols{display:grid;grid-template-columns:1fr 1fr;gap:36px;}
+  .stack{display:flex;width:100%;height:58px;border:1px solid var(--ink);overflow:hidden;font-family:var(--mono);}
+  .stack .seg{display:flex;flex-direction:column;justify-content:center;padding:0 12px;color:#fff;min-width:0;}
+  .stack .seg .pct{font-size:1rem;font-weight:600;} .stack .seg .lbl{font-size:0.55rem;letter-spacing:0.05em;text-transform:uppercase;opacity:0.85;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .seg.eq{background:var(--copper);} .seg.debt{background:var(--slate);} .seg.vend{background:var(--steel);} .seg.grant{background:var(--good,#4E7C59);}
+  .keyline{display:flex;flex-wrap:wrap;gap:10px 20px;margin-top:14px;font-family:var(--mono);font-size:0.72rem;color:var(--steel);}
+  .keyline .it{display:flex;align-items:center;gap:7px;} .keyline .sw{width:10px;height:10px;display:inline-block;}
+
+  /* funding option cards */
+  .opts{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;}
+  .opt{border:1px solid var(--line);background:#fff;padding:16px;}
+  .opt .n{font-family:var(--mono);font-size:0.62rem;color:var(--copper);letter-spacing:0.06em;}
+  .opt .t{font-weight:640;margin:3px 0 6px;font-size:0.98rem;}
+  .opt .d{font-size:0.86rem;color:#333b42;}
+  .opt .pc{font-size:0.8rem;color:var(--steel);margin-top:8px;border-top:1px solid var(--line);padding-top:8px;}
+  .opt .pc b{color:var(--ink);}
+  .opt.rec{border-color:var(--copper);background:var(--copper-wash);}
+  .opt.rec .t::after{content:" ★";color:var(--copper);}
+
+  .gate{background:var(--slate);color:var(--offwhite);padding:20px 22px;margin-top:24px;border-left:3px solid var(--copper);}
+  .gate b{color:#fff;}
+  ol.steps{list-style:none;counter-reset:s;padding:0;margin:16px 0 0;display:grid;grid-template-columns:repeat(2,1fr);gap:12px 30px;}
+  ol.steps li{counter-increment:s;padding-left:40px;position:relative;font-size:0.9rem;}
+  ol.steps li::before{content:counter(s,decimal-leading-zero);position:absolute;left:0;top:0;font-family:var(--mono);font-size:0.78rem;color:var(--copper);border:1px solid var(--copper);width:27px;height:27px;display:flex;align-items:center;justify-content:center;}
+  ol.steps li b{font-weight:640;}
+  footer{padding:26px 0 40px;font-family:var(--mono);font-size:0.68rem;color:var(--steel);line-height:1.6;}
+
+  @media (max-width:820px){
+    .metrics{grid-template-columns:repeat(2,1fr);}
+    .facts,.units,.opts{grid-template-columns:1fr;}
+    .resp,.cols{grid-template-columns:1fr;} .cols{gap:26px;}
+    ol.steps{grid-template-columns:1fr;}
+  }
+  /* monthly member table */
+  .scrolly{max-height:440px;overflow-y:auto;border:1px solid var(--line);}
+  .scrolly table{min-width:760px;font-size:0.8rem;}
+  .scrolly thead th{position:sticky;top:0;background:var(--paper-2);z-index:2;}
+  .scrolly td,.scrolly th{padding:6px 10px;}
+  .scrolly tr.ms td{background:var(--copper-wash);font-weight:600;}
+  @media (prefers-reduced-motion:reduce){*{scroll-behavior:auto;}}
+</style>
+
+<div class="band">
+  <div class="wrap">
+    <p class="kicker">Confidential · Project Ampère "JV3" · France · For Discussion Only</p>
+    <h1>Three neolabs. One AI factory. <span class="hl">Demand they guarantee themselves.</span></h1>
+    <p class="thesis">A captive compute cooperative in France: three AI labs build, own, and consume the compute they train on — GB300 racked in existing colo and live in six months, a dedicated campus built in parallel for Vera Rubin. A firm ~$5.0B, ~100MW program (T1–T5); two further tranches held as unpriced options toward 140MW.</p>
+    <div class="metrics">
+      <div class="metric"><div class="v">3</div><div class="k">Neolab members · equal thirds</div></div>
+      <div class="metric"><div class="v">m6<span class="u">→m33</span></div><div class="k">First compute → full firm fleet</div></div>
+      <div class="metric"><div class="v">~$5.0<span class="u">B</span></div><div class="k">Firm T1–T5 · T6–7 unpriced options</div></div>
+      <div class="metric"><div class="v">~40k</div><div class="k">GPU packages · 444 EF dense FP8</div></div>
+      <div class="metric"><div class="v">3×</div><div class="k">Member take-or-pay + backer credit support</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <section>
+    <p class="eyebrow">What this is</p>
+    <h2>A three-member neolab cooperative — not a merchant data center</h2>
+    <p class="lede">Three AI labs form a joint venture to build the compute they each need, at cost. Each member takes an equal ~7MW slice of every tranche and signs a take-or-pay contract guaranteeing it — so demand is 100% committed from day one, with no dependence on an external anchor tenant. GB300 starts immediately in rented colo space; the owned campus comes online for Vera Rubin.</p>
+    <div class="facts">
+      <div class="fact"><div class="t">Equal thirds</div><div class="d">Each member funds and controls its own ~7MW sleeve in every tranche; the campus is shared and cost-split 1/3.</div></div>
+      <div class="fact"><div class="t">Self-guaranteed demand</div><div class="d">Each member's take-or-pay is the bankable contract — the members are both the owners and the customers.</div></div>
+      <div class="fact"><div class="t">Colo-first, then campus</div><div class="d">GB300 rents existing AI-ready colo (live month 6). A purpose-built French campus follows for Rubin — site to be selected, subject to executed exclusivity, grid offer and permitting diligence.</div></div>
+    </div>
+  </section>
+
+  <section>
+    <p class="eyebrow">The tranches — in MW and $ · as of 14 Jul 2026</p>
+    <h2>Two GB300 tranches now, three Rubin tranches next — two unpriced options beyond</h2>
+    <p class="lede">Tranches are nominal 20MW blocks (actual nameplate ~20.4MW IT; ~24.5MW gross at PUE 1.20). GPUs come online <b>six months after buyout</b>; the owned blocks additionally gate on construction (21 months modelled for a pre-de-risked fast-track site; 22–24 standard / 30–36 downside scenarios). T1–T2 are commit-grade planning; T3–T5 are <b>provisional</b> — re-priced at NVIDIA's spec freeze, subject to vendor allocation and facility delivery; T6–T7 are <b>unpriced options</b>.</p>
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Tranche</th><th>Platform</th><th>Siting</th><th class="num">Racks<br>(per member)</th><th class="num">GPU pkgs</th><th class="num">kW/rack</th><th class="num">MW (IT)</th><th class="num">Buyout</th><th class="num">Online</th><th class="num">All-in $</th><th class="num">Per member</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="gb"><td>T1 <span class="pill gb">now</span></td><td>GB300 NVL72</td><td>existing colo</td><td class="num">144 (48)</td><td class="num">10,368</td><td class="num">142</td><td class="num">20.4</td><td class="num">m0</td><td class="num"><b>m6</b></td><td class="num dollar">~$0.80B</td><td class="num">~$0.27B</td></tr>
+          <tr class="gb"><td>T2 <span class="pill gb">now</span></td><td>GB300 NVL72</td><td>existing colo</td><td class="num">144 (48)</td><td class="num">10,368</td><td class="num">142</td><td class="num">20.4</td><td class="num">m6</td><td class="num">m12</td><td class="num dollar">~$0.80B</td><td class="num">~$0.27B</td></tr>
+          <tr class="v72"><td>T3</td><td>Vera Rubin NVL72</td><td>own campus (built m0–21)</td><td class="num">90 (30)</td><td class="num">6,480</td><td class="num">227</td><td class="num">20.4</td><td class="num">m15</td><td class="num">m21</td><td class="num dollar">~$1.15B</td><td class="num">~$0.38B</td></tr>
+          <tr class="v72"><td>T4</td><td>Vera Rubin NVL72</td><td>own campus (m6–27)</td><td class="num">90 (30)</td><td class="num">6,480</td><td class="num">227</td><td class="num">20.4</td><td class="num">m21</td><td class="num">m27</td><td class="num dollar">~$1.15B</td><td class="num">~$0.38B</td></tr>
+          <tr class="v72"><td>T5</td><td>Vera Rubin NVL72</td><td>own campus (m12–33)</td><td class="num">90 (30)</td><td class="num">6,480</td><td class="num">227</td><td class="num">20.4</td><td class="num">m27</td><td class="num"><b>m33</b></td><td class="num dollar">~$1.15B</td><td class="num">~$0.38B</td></tr>
+          <tr class="v576"><td>T6–T7 <span class="pill gb">options</span></td><td>Rubin Ultra or then-best platform</td><td>own campus</td><td class="num" colspan="7">unpriced — configuration, price, power and schedule set at NVIDIA spec freeze + vendor quotes</td><td class="num">—</td></tr>
+        </tbody>
+        <tfoot>
+          <tr><td>Firm program T1–T5</td><td>2 GB300 + 3 Rubin NVL72</td><td>—</td><td class="num">558</td><td class="num">40,176</td><td class="num">—</td><td class="num">~102</td><td class="num">—</td><td class="num">m33</td><td class="num dollar">~$5.0B</td><td class="num">~$1.68B</td></tr>
+        </tfoot>
+      </table>
+    </div>
+    <p class="muted" style="font-size:0.82rem;margin-top:12px">Firm-program range ~$4.8–5.4B (GB300 band $244–294M/member; Rubin low case $234M). <b>Cost basis (status-labelled; nothing is an executed quote):</b> GB300 ChipCo is a <b>bottom-up $266M/member</b> — 48 × $4.0M rack (street-band estimate, Loop Capital $3.7–4.0M) + fabric/storage/spares $38.4M + deployment $35.6M (yr-1 software/support, freight, install &amp; acceptance, VAT carry, ~7% contingency) = <b>$5.54M/rack fully loaded</b>. Rubin ChipCo $293.3M/member is the conservative complete case (30 × $8.5M × 1.15; $7.8M-configured low case $234M — quote-pending). Owned blocks add a <b>$267.5M PropCo</b> per tranche (T&amp;T Paris $10.8/W + liquid premium + grid + owner costs; range $260–275M) — <b>GB300 rents instead</b> ($130/kW-mo wholesale colo, billed on ⅓ of a 20MW reservation; sensitivity 130/155/180). Loans: 5-yr amortizing from buyout, 9.5% (GB300) → 8.5% (Rubin), 37/63 simplified stack (detailed alternative 35/42/23 senior/vendor split); ~6 months of debt service runs before first compute. <b>Compute counting:</b> physical GPU packages; dense FP8 (GB300 360 PF/rack, Rubin 1,260) → <b>3.50×/GPU, ~2.19× per MW</b>. A <b>refresh reserve</b> (8.75%/yr of ChipCo from month 12 online) accumulates ~$0.49B/member of restricted cash for the year-5 refresh (memo, not in cost totals). Full monthly engine: <code>jv_economics_v4.csv</code>.</p>
+  </section>
+
+  <section>
+    <p class="eyebrow">Unit economics · the density shift</p>
+    <h2>Constant 20MW, fewer racks, more compute each generation</h2>
+    <div class="units">
+      <div class="unit">
+        <div class="ph">GB300 NVL72</div><div class="sub">Phase 1 · rented colo · live m6</div>
+        <div class="grid2">
+          <div><div class="lab">$/rack loaded</div>$5.54M</div><div><div class="lab">kW/rack</div>142</div>
+          <div><div class="lab">Dense FP8/rack</div>360 PF</div><div><div class="lab">Racks / block</div><span class="big">144</span></div>
+        </div>
+        <div class="rackbar"><i style="width:100%"></i></div>
+      </div>
+      <div class="unit">
+        <div class="ph">Vera Rubin NVL72</div><div class="sub">Phase 2 · own campus · provisional path</div>
+        <div class="grid2">
+          <div><div class="lab">$/rack (range)</div>$7.8–9.8M</div><div><div class="lab">kW/rack MaxP</div>227</div>
+          <div><div class="lab">Dense FP8/rack</div>1,260 PF</div><div><div class="lab">Racks / block</div><span class="big">90</span></div>
+        </div>
+        <div class="rackbar"><i style="width:62%"></i></div>
+      </div>
+      <div class="unit">
+        <div class="ph">T6–T7 · Rubin Ultra or best-then</div><div class="sub">Unpriced options · at spec freeze</div>
+        <div class="grid2">
+          <div><div class="lab">$/rack</div>TBD</div><div><div class="lab">kW/rack</div>TBD</div>
+          <div><div class="lab">Config</div>TBD (NVL576 = 8-rack domain)</div><div><div class="lab">Racks / block</div><span class="big">—</span></div>
+        </div>
+        <div class="rackbar"><i style="width:0%"></i></div>
+      </div>
+    </div>
+    <p class="eyebrow" style="margin-top:30px">What the compute costs · 5-year all-in, 90% billed availability</p>
+    <div class="metrics" style="margin-top:0">
+      <div class="metric"><div class="v">$2.10</div><div class="k">per GB300-equiv GPU-hr (blended, 90%)</div></div>
+      <div class="metric"><div class="v">$0.42</div><div class="k">per PFLOPS-hr · dense FP8 (90%)</div></div>
+      <div class="metric"><div class="v">$0.70</div><div class="k">per normalized GB300-W / month</div></div>
+      <div class="metric"><div class="v">$1.78</div><div class="k">Vera Rubin $/equiv-hr — the sweet spot</div></div>
+      <div class="metric"><div class="v">$5–8</div><div class="k">merchant reference, GB300-class reserved</div></div>
+    </div>
+    <p class="muted" style="font-size:0.82rem;margin-top:12px">All unit costs: 5-year all-in member cash ÷ hours at <b>90% billed availability</b>. Equivalence anchored in <b>dense FP8</b> (not sparsity-inflated, not FP4 marketing flops): GB300 5.0 PF / Rubin 17.5 PF per GPU package → <b>3.50× per GPU, ~2.19× per MW</b>; "normalized GB300-W" = watts of GB300 delivering equal dense FP8 (convention disclosed). By sleeve: GB300 <b>$3.16</b>/GPU-hr · Rubin $6.23/GPU-hr = <b>$1.78</b>/GB300-equiv-hr. Even at the harshest-reviewer cost basis, the co-op runs at ~⅓ of merchant.</p>
+  </section>
+
+  <section>
+    <p class="eyebrow">Who does what</p>
+    <h2>The JV owns the powered infrastructure — the neolabs own the compute</h2>
+    <p class="lede">A clean division of labor and risk: the JV is the shared platform (land, power, shell, allocation, operations); each neolab funds and runs its own GPU sleeve and guarantees its own demand. Real-estate risk sits with the JV; GPU-obsolescence risk sits with the members, hedged by their take-or-pay.</p>
+    <div class="resp">
+      <div class="jv">
+        <h3>The JV · shared platform (PropCo + OpCo)</h3>
+        <ul>
+          <li>Site control, permits, <b>grid connection + power procurement</b> (subject to executed RTE/DSO offer — none assumed); signs the <b>colo master lease</b> for the GB300 phase</li>
+          <li>Powered shell for the Rubin campus — building, electrical, liquid-cooling plant, <b>800VDC backbone</b> (T1–T2 rent existing colo instead)</li>
+          <li>Holds the <b>master NVIDIA allocation</b>; distributes to members</li>
+          <li>Shared network fabric, security, 24/7 campus operations & facility SLAs</li>
+          <li>Finances & owns PropCo (infra debt + equity + sovereign/EU capital); runs EPC delivery</li>
+          <li>Bears <b>shell / real-estate residual risk</b> (15–30yr life)</li>
+        </ul>
+      </div>
+      <div class="lab">
+        <h3>Each neolab · its own ChipCo sleeve (~7MW)</h3>
+        <ul>
+          <li>Funds its <b>~1/3 sleeve equity</b> and its GPU purchase (deposit + equity + sleeve debt)</li>
+          <li>Signs & <b>self-guarantees its take-or-pay</b> — the bankable demand contract</li>
+          <li>Provides <b>VC-backer credit support</b> (LC / guarantee) behind its sleeve debt</li>
+          <li>Runs its own workloads, software / MLOps, and refresh decisions</li>
+          <li>Bears <b>GPU obsolescence risk</b> (4–6yr) on its sleeve</li>
+          <li>Pays capacity fees / prepayment into the JV (funds the debt-service reserve)</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <p class="eyebrow">Base financing</p>
+    <h2>Blended stack, sequenced by tranche — self-funding as it scales</h2>
+    <p class="lede">The members' take-or-pay is the single most valuable financing input — but three venture-backed labs are a sub-investment-grade credit, so the base case is underwritten on hard member support alone. Debt sizes on the <b>reserved-capacity leg</b> of the contract (payable irrespective of usage), not on utilization. Public capital and NVIDIA support are upside levers that improve the base — they do not define it.</p>
+    <div class="cols">
+      <div>
+        <p class="eyebrow">Per-member GB300 sleeve · ~$266M fully loaded (chips-only, colo) · working case</p>
+        <div class="stack">
+          <div class="seg eq" style="flex-basis:37%"><span class="pct">37%</span><span class="lbl">Equity deposit · $98M</span></div>
+          <div class="seg debt" style="flex-basis:63%"><span class="pct">63%</span><span class="lbl">5-yr amortizing debt · $168M (simplified single facility)</span></div>
+        </div>
+        <div class="keyline">
+          <span class="it"><i class="sw" style="background:var(--copper)"></i>Member + VC-backer equity (LC/guarantee behind the take-or-pay)</span>
+          <span class="it"><i class="sw" style="background:var(--slate)"></i>9.5% first close → 8.5% (Rubin) as the JV seasons</span>
+        </div>
+        <p class="muted" style="font-size:0.86rem;margin-top:16px">The 63% single loan is the agreed simplification; the <b>detailed alternative splits it 42% senior GPU debt + 23% vendor finance</b> (35% equity) with separate margins, tenors and security — used at term-sheet stage. Total interest ~$44M per GB300 sleeve (incl. ~$8M during the 6-month rack-up before compute). Debt is underwritten on actual member take-or-pay payment schedules with backer credit support — not on cost-plus coverage arithmetic. Fees, IDC and DSRA are placeholders pending term sheets. <b>Upside levers:</b> EU InvestAI/Bpifrance award (up to ~17% of eligible capex — on award only; base assumes zero) and an NVIDIA backstop (priced strategic capital, not free).</p>
+      </div>
+      <div>
+        <p class="eyebrow">The recycling flywheel — PropCo-first</p>
+        <p style="font-size:0.94rem;margin-top:0">The base takeout is the <b>shell, not the chips</b>: once a block runs 18–24 months under its take-or-pay, the PropCo refinances into a <b>euro data-center ABS</b> (Vantage's €640M EMEA deal is the template), returning equity for the next tranche. ChipCo refinancing — where GPU residuals can compress in one product cycle — is upside only. Members top up equity checks with <b>low-coupon convertibles</b> (Nebius's 1–3% notes).</p>
+        <p class="muted" style="font-size:0.86rem;margin-top:12px">Per member, firm program: <b>~$1.68B capex</b> (equity ~$0.62B + debt ~$1.06B); T6–T7 add scope only when struck. Year-one member cash ≈ <b>$0.34B</b> (T1+T2 equity checks, debt service, colo fees, and the first campus construction draws). A <b>refresh reserve</b> (8.75%/yr of ChipCo from month 12 online) additionally accumulates ~$0.49B of restricted cash by year 5 — the refresh war-chest, shown as memo. Full month-by-month wallet: <code>jv_economics_v4.csv</code> and the table below.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <p class="eyebrow">The member wallet · month by month</p>
+    <h2>What one member pays, and what comes online, every month</h2>
+    <p class="lede">One member's firm path (its ⅓ of T1–T5), month 0 to month 93 — capital paid in and debt repayment as separate columns, plus running costs and the GPUs live in its sleeves. Milestone months are highlighted. Generated from <code>jv_economics_v4.csv</code>; all $M.</p>
+    <div class="tbl-wrap scrolly">
+      <table>
+        <thead>
+          <tr><th>Month</th><th>Milestone</th><th class="num">Capital paid-in</th><th class="num">Debt repayment</th><th class="num">Running costs</th><th class="num">Total cash</th><th class="num">Cumulative</th><th class="num">GPUs online</th><th class="num">GB300-equiv</th></tr>
+        </thead>
+        <tbody>
+<!-- MONTHLY_TABLE_START -->
+<tr class="ms"><td class="num">m0</td><td>T1 buyout + T3 constr start</td><td class="num">102.2</td><td class="num">0.00</td><td class="num">0.00</td><td class="num">102.2</td><td class="num">102</td><td class="num">0</td><td class="num">0</td></tr>
+<tr><td class="num">m1</td><td></td><td class="num">4.2</td><td class="num">3.53</td><td class="num">0.00</td><td class="num">7.8</td><td class="num">110</td><td class="num">0</td><td class="num">0</td></tr>
+<tr><td class="num">m2</td><td></td><td class="num">4.2</td><td class="num">3.53</td><td class="num">0.00</td><td class="num">7.8</td><td class="num">118</td><td class="num">0</td><td class="num">0</td></tr>
+<tr><td class="num">m3</td><td></td><td class="num">4.2</td><td class="num">3.53</td><td class="num">0.00</td><td class="num">7.8</td><td class="num">126</td><td class="num">0</td><td class="num">0</td></tr>
+<tr><td class="num">m4</td><td></td><td class="num">4.2</td><td class="num">3.53</td><td class="num">0.00</td><td class="num">7.8</td><td class="num">133</td><td class="num">0</td><td class="num">0</td></tr>
+<tr><td class="num">m5</td><td></td><td class="num">4.2</td><td class="num">3.53</td><td class="num">0.00</td><td class="num">7.8</td><td class="num">141</td><td class="num">0</td><td class="num">0</td></tr>
+<tr class="ms"><td class="num">m6</td><td>T1 ONLINE + T2 buyout + T4 constr start</td><td class="num">106.5</td><td class="num">3.53</td><td class="num">2.02</td><td class="num">112.0</td><td class="num">253</td><td class="num">3,456</td><td class="num">3,456</td></tr>
+<tr><td class="num">m7</td><td></td><td class="num">8.5</td><td class="num">7.06</td><td class="num">2.02</td><td class="num">17.6</td><td class="num">271</td><td class="num">3,456</td><td class="num">3,456</td></tr>
+<tr><td class="num">m8</td><td></td><td class="num">8.5</td><td class="num">7.06</td><td class="num">2.02</td><td class="num">17.6</td><td class="num">288</td><td class="num">3,456</td><td class="num">3,456</td></tr>
+<tr><td class="num">m9</td><td></td><td class="num">8.5</td><td class="num">7.06</td><td class="num">2.02</td><td class="num">17.6</td><td class="num">306</td><td class="num">3,456</td><td class="num">3,456</td></tr>
+<tr><td class="num">m10</td><td></td><td class="num">8.5</td><td class="num">7.06</td><td class="num">2.02</td><td class="num">17.6</td><td class="num">324</td><td class="num">3,456</td><td class="num">3,456</td></tr>
+<tr><td class="num">m11</td><td></td><td class="num">8.5</td><td class="num">7.06</td><td class="num">2.02</td><td class="num">17.6</td><td class="num">341</td><td class="num">3,456</td><td class="num">3,456</td></tr>
+<tr class="ms"><td class="num">m12</td><td>T2 ONLINE + T5 constr start</td><td class="num">12.7</td><td class="num">7.06</td><td class="num">4.05</td><td class="num">23.8</td><td class="num">365</td><td class="num">6,912</td><td class="num">6,912</td></tr>
+<tr><td class="num">m13</td><td></td><td class="num">12.7</td><td class="num">7.06</td><td class="num">4.05</td><td class="num">23.8</td><td class="num">389</td><td class="num">6,912</td><td class="num">6,912</td></tr>
+<tr><td class="num">m14</td><td></td><td class="num">12.7</td><td class="num">7.06</td><td class="num">4.05</td><td class="num">23.8</td><td class="num">412</td><td class="num">6,912</td><td class="num">6,912</td></tr>
+<tr class="ms"><td class="num">m15</td><td>T3 buyout</td><td class="num">65.5</td><td class="num">7.06</td><td class="num">4.05</td><td class="num">76.7</td><td class="num">489</td><td class="num">6,912</td><td class="num">6,912</td></tr>
+<tr><td class="num">m16</td><td></td><td class="num">12.7</td><td class="num">11.99</td><td class="num">4.05</td><td class="num">28.8</td><td class="num">518</td><td class="num">6,912</td><td class="num">6,912</td></tr>
+<tr><td class="num">m17</td><td></td><td class="num">12.7</td><td class="num">11.99</td><td class="num">4.05</td><td class="num">28.8</td><td class="num">547</td><td class="num">6,912</td><td class="num">6,912</td></tr>
+<tr><td class="num">m18</td><td></td><td class="num">12.7</td><td class="num">11.99</td><td class="num">4.05</td><td class="num">28.8</td><td class="num">576</td><td class="num">6,912</td><td class="num">6,912</td></tr>
+<tr><td class="num">m19</td><td></td><td class="num">12.7</td><td class="num">11.99</td><td class="num">4.05</td><td class="num">28.8</td><td class="num">604</td><td class="num">6,912</td><td class="num">6,912</td></tr>
+<tr><td class="num">m20</td><td></td><td class="num">12.7</td><td class="num">11.99</td><td class="num">4.05</td><td class="num">28.8</td><td class="num">633</td><td class="num">6,912</td><td class="num">6,912</td></tr>
+<tr class="ms"><td class="num">m21</td><td>T3 ONLINE + T4 buyout</td><td class="num">61.3</td><td class="num">11.99</td><td class="num">5.59</td><td class="num">78.9</td><td class="num">712</td><td class="num">9,072</td><td class="num">14,472</td></tr>
+<tr><td class="num">m22</td><td></td><td class="num">8.5</td><td class="num">16.92</td><td class="num">5.59</td><td class="num">31.0</td><td class="num">743</td><td class="num">9,072</td><td class="num">14,472</td></tr>
+<tr><td class="num">m23</td><td></td><td class="num">8.5</td><td class="num">16.92</td><td class="num">5.59</td><td class="num">31.0</td><td class="num">774</td><td class="num">9,072</td><td class="num">14,472</td></tr>
+<tr><td class="num">m24</td><td></td><td class="num">8.5</td><td class="num">16.92</td><td class="num">5.59</td><td class="num">31.0</td><td class="num">805</td><td class="num">9,072</td><td class="num">14,472</td></tr>
+<tr><td class="num">m25</td><td></td><td class="num">8.5</td><td class="num">16.92</td><td class="num">5.59</td><td class="num">31.0</td><td class="num">836</td><td class="num">9,072</td><td class="num">14,472</td></tr>
+<tr><td class="num">m26</td><td></td><td class="num">8.5</td><td class="num">16.92</td><td class="num">5.59</td><td class="num">31.0</td><td class="num">867</td><td class="num">9,072</td><td class="num">14,472</td></tr>
+<tr class="ms"><td class="num">m27</td><td>T4 ONLINE + T5 buyout</td><td class="num">57.0</td><td class="num">16.92</td><td class="num">7.14</td><td class="num">81.1</td><td class="num">948</td><td class="num">11,232</td><td class="num">22,032</td></tr>
+<tr><td class="num">m28</td><td></td><td class="num">4.2</td><td class="num">21.86</td><td class="num">7.14</td><td class="num">33.2</td><td class="num">981</td><td class="num">11,232</td><td class="num">22,032</td></tr>
+<tr><td class="num">m29</td><td></td><td class="num">4.2</td><td class="num">21.86</td><td class="num">7.14</td><td class="num">33.2</td><td class="num">1,015</td><td class="num">11,232</td><td class="num">22,032</td></tr>
+<tr><td class="num">m30</td><td></td><td class="num">4.2</td><td class="num">21.86</td><td class="num">7.14</td><td class="num">33.2</td><td class="num">1,048</td><td class="num">11,232</td><td class="num">22,032</td></tr>
+<tr><td class="num">m31</td><td></td><td class="num">4.2</td><td class="num">21.86</td><td class="num">7.14</td><td class="num">33.2</td><td class="num">1,081</td><td class="num">11,232</td><td class="num">22,032</td></tr>
+<tr><td class="num">m32</td><td></td><td class="num">4.2</td><td class="num">21.86</td><td class="num">7.14</td><td class="num">33.2</td><td class="num">1,114</td><td class="num">11,232</td><td class="num">22,032</td></tr>
+<tr class="ms"><td class="num">m33</td><td>T5 ONLINE</td><td class="num">0.0</td><td class="num">21.86</td><td class="num">8.68</td><td class="num">30.5</td><td class="num">1,145</td><td class="num">13,392</td><td class="num">29,592</td></tr>
+<tr><td class="num">m34</td><td></td><td class="num">0.0</td><td class="num">21.86</td><td class="num">8.68</td><td class="num">30.5</td><td class="num">1,176</td><td class="num">13,392</td><td class="num">29,592</td></tr>
+<tr><td class="num">m35</td><td></td><td class="num">0.0</td><td class="num">21.86</td><td class="num">8.68</td><td class="num">30.5</td><td class="num">1,206</td><td class="num">13,392</td><td class="num">29,592</td></tr>
+<tr><td class="num">m36</td><td></td><td class="num">0.0</td><td class="num">21.86</td><td class="num">8.68</td><td class="num">30.5</td><td class="num">1,236</td><td class="num">13,392</td><td class="num">29,592</td></tr>
+<tr><td class="num">m37</td><td></td><td class="num">0.0</td><td class="num">21.86</td><td class="num">8.68</td><td class="num">30.5</td><td class="num">1,267</td><td class="num">13,392</td><td class="num">29,592</td></tr>
+<tr><td class="num">m38</td><td></td><td class="num">0.0</td><td class="num">21.86</td><td class="num">8.68</td><td class="num">30.5</td><td class="num">1,298</td><td class="num">13,392</td><td class="num">29,592</td></tr>
+<tr><td class="num">m39</td><td></td><td class="num">0.0</td><td class="num">21.86</td><td class="num">8.68</td><td class="num">30.5</td><td class="num">1,328</td><td class="num">13,392</td><td class="num">29,592</td></tr>
+<tr><td class="num">m40</td><td></td><td class="num">0.0</td><td class="num">21.86</td><td class="num">8.68</td><td class="num">30.5</td><td class="num">1,359</td><td class="num">13,392</td><td class="num">29,592</td></tr>
+<tr><td class="num">m41</td><td></td><td class="num">0.0</td><td class="num">21.86</td><td class="num">8.68</td><td class="num">30.5</td><td class="num">1,389</td><td class="num">13,392</td><td class="num">29,592</td></tr>
+<tr><td class="num">m42</td><td></td><td class="num">0.0</td><td class="num">21.86</td><td class="num">8.68</td><td class="num">30.5</td><td class="num">1,420</td><td class="num">13,392</td><td class="num">29,592</td></tr>
+<tr><td class="num">m43</td><td></td><td class="num">0.0</td><td class="num">21.86</td><td class="num">8.68</td><td class="num">30.5</td><td class="num">1,450</td><td class="num">13,392</td><td class="num">29,592</td></tr>
+<tr><td class="num">m44</td><td></td><td class="num">0.0</td><td class="num">21.86</td><td class="num">8.68</td><td class="num">30.5</td><td class="num">1,481</td><td class="num">13,392</td><td class="num">29,592</td></tr>
+<tr><td class="num">m45</td><td></td><td class="num">0.0</td><td class="num">21.86</td><td class="num">8.68</td><td class="num">30.5</td><td class="num">1,511</td><td class="num">13,392</td><td class="num">29,592</td></tr>
+<tr><td class="num">m46</td><td></td><td class="num">0.0</td><td class="num">21.86</td><td class="num">8.68</td><td class="num">30.5</td><td class="num">1,542</td><td class="num">13,392</td><td class="num">29,592</td></tr>
+<tr><td class="num">m47</td><td></td><td class="num">0.0</td><td class="num">21.86</td><td class="num">8.68</td><td class="num">30.5</td><td class="num">1,572</td><td class="num">13,392</td><td class="num">29,592</td></tr>
+<tr><td class="num">m48</td><td></td><td class="num">0.0</td><td class="num">21.86</td><td class="num">8.68</td><td class="num">30.5</td><td class="num">1,603</td><td class="num">13,392</td><td class="num">29,592</td></tr>
+<tr><td class="num">m49</td><td></td><td class="num">0.0</td><td class="num">21.86</td><td class="num">8.68</td><td class="num">30.5</td><td class="num">1,634</td><td class="num">13,392</td><td class="num">29,592</td></tr>
+<tr><td class="num">m50</td><td></td><td class="num">0.0</td><td class="num">21.86</td><td class="num">8.68</td><td class="num">30.5</td><td class="num">1,664</td><td class="num">13,392</td><td class="num">29,592</td></tr>
+<tr><td class="num">m51</td><td></td><td class="num">0.0</td><td class="num">21.86</td><td class="num">8.68</td><td class="num">30.5</td><td class="num">1,695</td><td class="num">13,392</td><td class="num">29,592</td></tr>
+<tr><td class="num">m52</td><td></td><td class="num">0.0</td><td class="num">21.86</td><td class="num">8.68</td><td class="num">30.5</td><td class="num">1,725</td><td class="num">13,392</td><td class="num">29,592</td></tr>
+<tr><td class="num">m53</td><td></td><td class="num">0.0</td><td class="num">21.86</td><td class="num">8.68</td><td class="num">30.5</td><td class="num">1,756</td><td class="num">13,392</td><td class="num">29,592</td></tr>
+<tr><td class="num">m54</td><td></td><td class="num">0.0</td><td class="num">21.86</td><td class="num">8.68</td><td class="num">30.5</td><td class="num">1,786</td><td class="num">13,392</td><td class="num">29,592</td></tr>
+<tr><td class="num">m55</td><td></td><td class="num">0.0</td><td class="num">21.86</td><td class="num">8.68</td><td class="num">30.5</td><td class="num">1,817</td><td class="num">13,392</td><td class="num">29,592</td></tr>
+<tr><td class="num">m56</td><td></td><td class="num">0.0</td><td class="num">21.86</td><td class="num">8.68</td><td class="num">30.5</td><td class="num">1,847</td><td class="num">13,392</td><td class="num">29,592</td></tr>
+<tr><td class="num">m57</td><td></td><td class="num">0.0</td><td class="num">21.86</td><td class="num">8.68</td><td class="num">30.5</td><td class="num">1,878</td><td class="num">13,392</td><td class="num">29,592</td></tr>
+<tr><td class="num">m58</td><td></td><td class="num">0.0</td><td class="num">21.86</td><td class="num">8.68</td><td class="num">30.5</td><td class="num">1,908</td><td class="num">13,392</td><td class="num">29,592</td></tr>
+<tr><td class="num">m59</td><td></td><td class="num">0.0</td><td class="num">21.86</td><td class="num">8.68</td><td class="num">30.5</td><td class="num">1,939</td><td class="num">13,392</td><td class="num">29,592</td></tr>
+<tr><td class="num">m60</td><td></td><td class="num">0.0</td><td class="num">21.86</td><td class="num">8.68</td><td class="num">30.5</td><td class="num">1,969</td><td class="num">13,392</td><td class="num">29,592</td></tr>
+<tr><td class="num">m61</td><td></td><td class="num">0.0</td><td class="num">18.33</td><td class="num">8.68</td><td class="num">27.0</td><td class="num">1,996</td><td class="num">13,392</td><td class="num">29,592</td></tr>
+<tr><td class="num">m62</td><td></td><td class="num">0.0</td><td class="num">18.33</td><td class="num">8.68</td><td class="num">27.0</td><td class="num">2,023</td><td class="num">13,392</td><td class="num">29,592</td></tr>
+<tr><td class="num">m63</td><td></td><td class="num">0.0</td><td class="num">18.33</td><td class="num">8.68</td><td class="num">27.0</td><td class="num">2,050</td><td class="num">13,392</td><td class="num">29,592</td></tr>
+<tr><td class="num">m64</td><td></td><td class="num">0.0</td><td class="num">18.33</td><td class="num">8.68</td><td class="num">27.0</td><td class="num">2,078</td><td class="num">13,392</td><td class="num">29,592</td></tr>
+<tr><td class="num">m65</td><td></td><td class="num">0.0</td><td class="num">18.33</td><td class="num">8.68</td><td class="num">27.0</td><td class="num">2,104</td><td class="num">13,392</td><td class="num">29,592</td></tr>
+<tr><td class="num">m66</td><td></td><td class="num">0.0</td><td class="num">18.33</td><td class="num">6.66</td><td class="num">25.0</td><td class="num">2,130</td><td class="num">9,936</td><td class="num">26,136</td></tr>
+<tr><td class="num">m67</td><td></td><td class="num">0.0</td><td class="num">14.80</td><td class="num">6.66</td><td class="num">21.5</td><td class="num">2,151</td><td class="num">9,936</td><td class="num">26,136</td></tr>
+<tr><td class="num">m68</td><td></td><td class="num">0.0</td><td class="num">14.80</td><td class="num">6.66</td><td class="num">21.5</td><td class="num">2,172</td><td class="num">9,936</td><td class="num">26,136</td></tr>
+<tr><td class="num">m69</td><td></td><td class="num">0.0</td><td class="num">14.80</td><td class="num">6.66</td><td class="num">21.5</td><td class="num">2,194</td><td class="num">9,936</td><td class="num">26,136</td></tr>
+<tr><td class="num">m70</td><td></td><td class="num">0.0</td><td class="num">14.80</td><td class="num">6.66</td><td class="num">21.5</td><td class="num">2,215</td><td class="num">9,936</td><td class="num">26,136</td></tr>
+<tr><td class="num">m71</td><td></td><td class="num">0.0</td><td class="num">14.80</td><td class="num">6.66</td><td class="num">21.5</td><td class="num">2,237</td><td class="num">9,936</td><td class="num">26,136</td></tr>
+<tr><td class="num">m72</td><td></td><td class="num">0.0</td><td class="num">14.80</td><td class="num">4.63</td><td class="num">19.4</td><td class="num">2,256</td><td class="num">6,480</td><td class="num">22,680</td></tr>
+<tr><td class="num">m73</td><td></td><td class="num">0.0</td><td class="num">14.80</td><td class="num">4.63</td><td class="num">19.4</td><td class="num">2,276</td><td class="num">6,480</td><td class="num">22,680</td></tr>
+<tr><td class="num">m74</td><td></td><td class="num">0.0</td><td class="num">14.80</td><td class="num">4.63</td><td class="num">19.4</td><td class="num">2,295</td><td class="num">6,480</td><td class="num">22,680</td></tr>
+<tr><td class="num">m75</td><td></td><td class="num">0.0</td><td class="num">14.80</td><td class="num">4.63</td><td class="num">19.4</td><td class="num">2,314</td><td class="num">6,480</td><td class="num">22,680</td></tr>
+<tr><td class="num">m76</td><td></td><td class="num">0.0</td><td class="num">9.87</td><td class="num">4.63</td><td class="num">14.5</td><td class="num">2,329</td><td class="num">6,480</td><td class="num">22,680</td></tr>
+<tr><td class="num">m77</td><td></td><td class="num">0.0</td><td class="num">9.87</td><td class="num">4.63</td><td class="num">14.5</td><td class="num">2,344</td><td class="num">6,480</td><td class="num">22,680</td></tr>
+<tr><td class="num">m78</td><td></td><td class="num">0.0</td><td class="num">9.87</td><td class="num">4.63</td><td class="num">14.5</td><td class="num">2,358</td><td class="num">6,480</td><td class="num">22,680</td></tr>
+<tr><td class="num">m79</td><td></td><td class="num">0.0</td><td class="num">9.87</td><td class="num">4.63</td><td class="num">14.5</td><td class="num">2,372</td><td class="num">6,480</td><td class="num">22,680</td></tr>
+<tr><td class="num">m80</td><td></td><td class="num">0.0</td><td class="num">9.87</td><td class="num">4.63</td><td class="num">14.5</td><td class="num">2,387</td><td class="num">6,480</td><td class="num">22,680</td></tr>
+<tr><td class="num">m81</td><td></td><td class="num">0.0</td><td class="num">9.87</td><td class="num">3.09</td><td class="num">13.0</td><td class="num">2,400</td><td class="num">4,320</td><td class="num">15,120</td></tr>
+<tr><td class="num">m82</td><td></td><td class="num">0.0</td><td class="num">4.93</td><td class="num">3.09</td><td class="num">8.0</td><td class="num">2,408</td><td class="num">4,320</td><td class="num">15,120</td></tr>
+<tr><td class="num">m83</td><td></td><td class="num">0.0</td><td class="num">4.93</td><td class="num">3.09</td><td class="num">8.0</td><td class="num">2,416</td><td class="num">4,320</td><td class="num">15,120</td></tr>
+<tr><td class="num">m84</td><td></td><td class="num">0.0</td><td class="num">4.93</td><td class="num">3.09</td><td class="num">8.0</td><td class="num">2,424</td><td class="num">4,320</td><td class="num">15,120</td></tr>
+<tr><td class="num">m85</td><td></td><td class="num">0.0</td><td class="num">4.93</td><td class="num">3.09</td><td class="num">8.0</td><td class="num">2,432</td><td class="num">4,320</td><td class="num">15,120</td></tr>
+<tr><td class="num">m86</td><td></td><td class="num">0.0</td><td class="num">4.93</td><td class="num">3.09</td><td class="num">8.0</td><td class="num">2,440</td><td class="num">4,320</td><td class="num">15,120</td></tr>
+<tr><td class="num">m87</td><td></td><td class="num">0.0</td><td class="num">4.93</td><td class="num">1.54</td><td class="num">6.5</td><td class="num">2,446</td><td class="num">2,160</td><td class="num">7,560</td></tr>
+<tr><td class="num">m88</td><td></td><td class="num">0.0</td><td class="num">0.00</td><td class="num">1.54</td><td class="num">1.5</td><td class="num">2,448</td><td class="num">2,160</td><td class="num">7,560</td></tr>
+<tr><td class="num">m89</td><td></td><td class="num">0.0</td><td class="num">0.00</td><td class="num">1.54</td><td class="num">1.5</td><td class="num">2,450</td><td class="num">2,160</td><td class="num">7,560</td></tr>
+<tr><td class="num">m90</td><td></td><td class="num">0.0</td><td class="num">0.00</td><td class="num">1.54</td><td class="num">1.5</td><td class="num">2,451</td><td class="num">2,160</td><td class="num">7,560</td></tr>
+<tr><td class="num">m91</td><td></td><td class="num">0.0</td><td class="num">0.00</td><td class="num">1.54</td><td class="num">1.5</td><td class="num">2,453</td><td class="num">2,160</td><td class="num">7,560</td></tr>
+<tr><td class="num">m92</td><td></td><td class="num">0.0</td><td class="num">0.00</td><td class="num">1.54</td><td class="num">1.5</td><td class="num">2,454</td><td class="num">2,160</td><td class="num">7,560</td></tr>
+<tr><td class="num">m93</td><td></td><td class="num">0.0</td><td class="num">0.00</td><td class="num">0.00</td><td class="num">0.0</td><td class="num">2,454</td><td class="num">0</td><td class="num">0</td></tr>
+<!-- MONTHLY_TABLE_END -->
+        </tbody>
+      </table>
+    </div>
+    <p class="muted" style="font-size:0.82rem;margin-top:12px">"Capital paid-in" = equity checks at GPU buyout + campus construction draws (a linear draw simplification; milestone/S-curve draws are a modelling backlog item). "Debt repayment" = interest + principal on the 5-year loans (starts at buyout — note the payments with zero GPUs online during each 6-month rack-up). "GPUs online" counts physical packages in this member's live sleeves; GB300-equiv applies the dense-FP8 multiplier (Rubin 3.50× per package). The refresh reserve (memo, in the CSV) runs alongside these figures. Cumulative ends at ~$2.45B = this member's firm-program 5-year cost.</p>
+  </section>
+
+  <section>
+    <p class="eyebrow">Alternative funding strategies</p>
+    <h2>Eight options — blend them, sequenced by tranche</h2>
+    <p class="lede">No single source funds a ~$5B firm program. Underwrite the base on member credit alone; layer the rest as levers — each anchored to a real 2024–2026 precedent.</p>
+    <div class="opts">
+      <div class="opt rec"><div class="n">Option 1 · base</div><div class="t">Member equity + credit-enhanced GPU-backed debt</div><div class="d">Delayed-draw term loan in an SPV, sized on the reserved-capacity leg of the members' take-or-pay. First close prices wide (~SOFR+450–650); the IG benchmark is the <em>refinancing target after seasoning</em>, not day one.</div><div class="pc"><b>Precedent:</b> CoreWeave — 14–15% debt in 2023 → DDTL 4.0 at SOFR+2.25% / A3/A− by 2026, only after IG-customer backlog seasoned.</div></div>
+      <div class="opt rec"><div class="n">Option 2 · lever</div><div class="t">Sovereign / EU public capital</div><div class="d">EU covers up to ~17% of CAPEX + Bpifrance equity + "Choose France" halo. Cheapest, non-dilutive — pursue hard, but <b>underwrite only on a term sheet or award</b>, never in the base case.</div><div class="pc"><b>Precedent:</b> Campus AI (MGX / Bpifrance / Mistral / NVIDIA) €8.5B; EU InvestAI €20B for AI gigafactories; Bpifrance €10B AI envelope.</div></div>
+      <div class="opt"><div class="n">Option 3</div><div class="t">Sale-leaseback / OpCo–PropCo with an infra fund</div><div class="d">Sell the shell (and/or GPUs) to an infra fund; lease back long-term. Recycles equity; fund absorbs the hard-asset risk.</div><div class="pc"><b>Precedent:</b> Meta–Blue Owl "Hyperion" ~$30B (80/20); Crusoe–Blue Owl Abilene ~$15B, 15yr Oracle lease.</div></div>
+      <div class="opt rec"><div class="n">Option 4 · lever</div><div class="t">NVIDIA + OEM vendor financing</div><div class="d">An NVIDIA capacity backstop tightens debt spreads (−150–300bps); OEM deferred/lease terms cut upfront cash. Powerful — but <b>priced strategic capital</b>: NVIDIA takes concentration and option value, so model it as a lever, not free money.</div><div class="pc"><b>Precedent:</b> NVIDIA–CoreWeave $6.3B backstop (to 2032); Lambda–Macquarie $500M GPU facility.</div></div>
+      <div class="opt"><div class="n">Option 5</div><div class="t">Infra co-equity partner (GP / promote)</div><div class="d">An infra fund funds the equity bulk (~80/20); the three members keep GP control + carried upside above a hurdle.</div><div class="pc"><b>Precedent:</b> Meta–Blue Owl 80/20; DigitalBridge Partners III raised $11.7B for exactly this.</div></div>
+      <div class="opt rec"><div class="n">Option 6 · take-out</div><div class="t">Euro data-center ABS — PropCo only</div><div class="d">At 18–24 months of stabilized take-or-pay history, refinance the <b>shell</b> into ABS to recycle equity. The takeout market buys long-life infrastructure with strong contracts — not short-life chips; ChipCo takeout is upside only.</div><div class="pc"><b>Precedent:</b> Vantage EMEA €640M (first euro DC ABS, Class A A−); Switch $659M ABS.</div></div>
+      <div class="opt"><div class="n">Option 7 · member level</div><div class="t">Convertibles / venture debt</div><div class="d">Members fund their equity checks with low-coupon convertibles at HoldCo — cheap, fast, no immediate dilution.</div><div class="pc"><b>Precedent:</b> Nebius $1B converts (2.00% '29 / 3.00% '31), then ~$4.2B in 2025.</div></div>
+      <div class="opt"><div class="n">Option 8 · optional upside</div><div class="t">Forward capacity sale / prepay</div><div class="d">Graft an external anchor (Meta/Nebius-style) onto a tranche with a 15–25% prepay to buy back leverage and seed the ABS — not required, pure upside.</div><div class="pc"><b>Precedent:</b> Microsoft–CoreWeave ~$10B, customers prepay 15–25%.</div></div>
+    </div>
+    <div class="gate">
+      <b>Recommended sequence:</b> underwrite T1–T2 on <b>member equity + hard backer credit support + first-close DDTL (1)</b> — this must stand on its own → split <b>OpCo/PropCo</b> from day one → pursue <b>sovereign/EU capital (2)</b> and <b>NVIDIA support (4)</b> in parallel as levers that walk equity down and spreads in → <b>recycle via PropCo ABS (6)</b> at month 18–24 → bring an <b>infra co-equity partner (5)</b> if scaling beyond member capacity → exercise the <b>T6–T7 Rubin-Ultra options</b> only at spec freeze, re-underwritten. Keep the GP/promote and long-run upside with the three neolabs.
+    </div>
+  </section>
+
+  <section>
+    <p class="eyebrow">Getting started</p>
+    <h2>First moves</h2>
+    <ol class="steps">
+      <li><b>Form TopCo + sleeve template.</b> Three-member agreement: equal thirds, 48-rack GB300 allocation, per-sleeve autonomy, 2-of-3 supermajority + buy-sell.</li>
+      <li><b>Paper the self-guarantee.</b> Each member signs a two-leg take-or-pay (reserved-capacity + usage) and secures VC-backer credit support — JV3's gating item. Nail the governance hard points (cure periods, sleeve isolation, buy-sell, insolvency step-in) — lenders read these before pricing.</li>
+      <li><b>Lock allocation, colo + site.</b> 144-rack GB300 allocation + NVIDIA backstop; <b>AI-ready colo capacity for T1–T2</b> (~20MW, liquid-cooled; colo term sheet to pin reserved-power basis + CDU responsibility); site selection subject to executed exclusivity, grid-connection offer and permitting diligence.</li>
+      <li><b>Mandate the bank.</b> Structuring + warehouse to fund GPU deposits; ABS-take-out and co-equity conversations in parallel. Public capital (EU InvestAI / Bpifrance) pursued alongside as <b>optional upside only</b> — the base assumes zero subsidy.</li>
+      <li><b>FID Tranche 1 + break ground.</b> Each member writes its <b>$98M</b> T1 equity check (racks live month 6); campus construction starts the same month so Rubin lands at month 21.</li>
+    </ol>
+  </section>
+
+  <footer>
+    Project Ampère · JV3 member cost schedule one-pager · <b>assumptions as of 14 July 2026</b> · Indicative and confidential · Not an offer or a financing commitment · Outbound member costs only — no revenue modelled. Status: T1–T2 (GB300, colo) commit-grade planning; T3–T5 (Rubin NVL72, own campus) provisional pending NVIDIA spec freeze, vendor allocation and facility delivery; T6–T7 unpriced options — no T1–T7 total exists. Tranches are nominal 20MW (actual ~20.4MW IT nameplate); GPUs online 6 months after buyout (base; 16wk accelerated / 8–10mo downside); Rubin blocks gate on 21-month construction (22–24 standard / 30–36 downside). Compute counted in physical GPU packages and dense FP8 (not sparsity or FP4 figures). Nothing here is an executed quote: GB300 $4.0M/rack is a street-band estimate (Loop Capital) built up to $5.54M fully loaded; Rubin is a range pending quotes; PropCo from T&T Paris benchmarks; colo $130/kW-mo unquoted low case; power €90/MWh all-in planning case at $1.143/€ (ECB); site to be selected; public capital = zero in base. External reviews integrated with dispositions stated in JV3_financial_model.md v4 (critique.md, feedback.md). Working numbers: jv_economics_v4.csv (+ partner summary jv_economics_v4_redux.csv). Replace all figures with OEM BOM/quotes, allocation terms, colo/energy/EPC/lender term sheets and backer credit support before any investment decision.
+  </footer>
+
+</div>

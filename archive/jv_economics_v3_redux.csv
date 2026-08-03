@@ -1,0 +1,67 @@
+JV3 COMPUTE COOPERATIVE - PARTNER SUMMARY (v3.2 - TRAINING-HEAVY WORKING CASE),,,
+"Three AI labs jointly build 140MW of NVIDIA compute in France. Each member owns an equal ~1/3 sleeve of every tranche and guarantees its own demand. GB300 starts in rented colo space within 6 months; a dedicated campus is built for the Vera Rubin generations. Working case assumes TRAINING-HEAVY workloads (full fat-tree fabric + rich storage = 20% uplift on rack systems); the leaner 15% rail-optimized case is shown side-by-side at the bottom. Full detail: jv_economics_v3.csv.",,,
+,,,
+1. THE BUILD - 7 tranches of ~20MW,,,
+Tranche,Platform (where),GPUs bought (month),Compute live (month)
+T1,GB300 NVL72 (rented colo),m0,m6
+T2,GB300 NVL72 (rented colo),m6,m12
+T3,Vera Rubin NVL72 (own campus - built m0-m15),m9,m15
+T4,Vera Rubin NVL72 (own campus),m15,m21
+T5,Vera Rubin NVL72 (own campus),m21,m27
+T6,Rubin Ultra NVL576 (own campus - 800VDC),m27,m33
+T7,Rubin Ultra NVL576 (own campus),m33,m39
+,,,
+2. WHAT EACH MEMBER PAYS (per sleeve = 1/3 of a tranche; $M),,,
+,GB300 sleeve (x2),Vera Rubin sleeve (x3),Rubin Ultra sleeve (x2)
+Buy-in (37% equity deposit),85,136,276
+5-year loan (remainder),145,231,471
+Loan rate,9.5%,8.5%,8.0%
+Interest over the loan,38,53,102
+Running cost per year (power + facility + maintenance),22,17,27
+"All-in 5-year cost (capex + interest + running)",380,507,984
+,,,
+3. WHAT EACH MEMBER GETS (per sleeve),,,
+,GB300 sleeve,Vera Rubin sleeve,Rubin Ultra sleeve
+GPU packages,"3,456","2,160","1,584"
+FP8 compute installed (exaflops),15.6,37.8,55.0
+"Same compute expressed as GB300 megawatts (normalized)",6.5 MW,15.8 MW,22.9 MW
+,,,
+4. WHAT THE COMPUTE COSTS (5-year all-in; at 90% billed availability),,,
+,GB300 sleeve,Vera Rubin sleeve,Rubin Ultra sleeve
+$ per GB300-equivalent GPU-hour,2.79,1.53,2.04
+$ per PFLOPS-hour (FP8),0.62,0.34,0.45
+$ per normalized GB300-Watt per month,0.98,0.54,0.72
+Merchant market reference (GB300-class reserved),~$5-8 per GPU-hour,,
+,,,
+5. PROGRAM TOTALS,,Per member,Whole JV (x3)
+Capital spend (GPUs + campus share),,"$3.06B","$9.2B"
+- of which equity checks,,"$1.13B","$3.4B"
+- of which 5-year loans,,"$1.93B","$5.8B"
+Interest paid over the loans,,"$0.44B","$1.3B"
+Running costs (5 years per sleeve),,"$0.76B","$2.3B"
+TOTAL 5-YEAR COST,,"$4.25B","$12.7B"
+FP8 compute installed,,254 EF,764 EF
+Blended cost per GB300-equivalent GPU-hour (90% billed),,$1.91,$1.91
+Blended cost per normalized GB300-Watt per month,,$0.67,$0.67
+Firm commitment (T1-T5 only; T6-T7 are options),,"$1.56B capex","$4.7B capex"
+Cash in year one (equity + loan payments + running),,"~$0.39B",~$1.2B
+,,,
+6. SIDE-BY-SIDE: TRAINING-HEAVY (20% uplift - WORKING CASE) vs RAIL-OPTIMIZED (15%),,,
+Per member $M,20% training fat-tree (working),15% rail-optimized,Delta
+GB300 sleeve capex,230,221,+9
+Vera Rubin sleeve capex,367,354,+13
+Rubin Ultra sleeve capex,747,718,+29
+Program capex,"3,055","2,940",+115
+5-year total cost,"4,250","4,104",+146 (+3.6%)
+Blended $/GB300-equiv-hr @90%,1.91,1.84,+0.07
+"The uplift covers the rack-to-rack fabric + storage + spares. Training-heavy = full fat-tree at high bisection + rich storage tier (~$11k/GPU); rail-optimized (~$8k/GPU) fits inference/mixed workloads.",,,
+,,,
+7. NOTES,,,
+"GB300 rack price $4.0M - verified Jul 2026: top of the corroborated $3.7-4.0M street band (Loop Capital: Apple ~$1B / ~250 racks), set high as a memory-inflation buffer. Stress case $4.5M; a weakly-sourced $6M+ 'inference-optimized' config tail exists. NVIDIA publishes no list price.",,,
+"What's included where - NETWORKING: in-rack NVLink + NICs are inside the rack price; the rack-to-rack fabric + storage + spares are the 20% uplift. COOLING: cold plates/manifolds are in the rack price; facility cooling (CDUs, chilled water, heat rejection) is in the colo fee for GB300 and in the $8.5/W campus cost for Rubin blocks; cooling energy is in the power bill via PUE 1.20. Pin in the colo LOI whether sidecar CDUs are landlord- or tenant-furnished (~$2-5M/sleeve if tenant).",,,
+"Scope note: earlier drafts quoted ~$270M per GB300 sleeve INCLUDING a $61M owned-building share. GB300 now rents colo, so the sleeve is chips-only ($230M at the training uplift) and the building cost appears instead as ~$50M of colo fees over 5 years. Like-for-like owned at the verified $4.0M price would be ~$291M.",,,
+"Compute equivalence anchored in FP8 training flops (dense) - deliberately NOT the FP4 marketing metric. GB300 4.5 PF / Rubin 17.5 PF / Ultra 34.7 PF per GPU package; per-watt multipliers ~2.4x (Rubin) and ~3.5x (Ultra) vs GB300.",,,
+"T6-T7 (Rubin Ultra) are OPTIONS exercised only at NVIDIA spec freeze - not fixed commitments. Rubin/Ultra pricing preliminary; GB300 firm.",,,
+"Loans amortize monthly over 5 years; rates step down as the JV builds credit history (9.5% first close to 8.0%). Not netted: ~$0.27B per member of chip residual value (10%) and the campus building's residual life (15+yr asset charged over 5).",,,
+"Interest starts at GPU purchase - each GB300 sleeve pays ~$6.7M of interest during the 6-month rack-up before compute goes live.",,,
+"Members pay via take-or-pay contracts (reserved-capacity fee payable irrespective of usage) - this is what the loans are underwritten on.",,,

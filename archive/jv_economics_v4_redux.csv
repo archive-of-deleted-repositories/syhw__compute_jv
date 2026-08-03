@@ -1,0 +1,60 @@
+JV3 COMPUTE COOPERATIVE - PARTNER SUMMARY v4 (as of 14 Jul 2026),,,
+"Three AI labs jointly build ~100MW of NVIDIA compute in France as a FIRM program (T1-T5), with two further tranches held as unpriced options. Each member owns an equal 1/3 sleeve of every tranche and commits to it via take-or-pay with credit support. GB300 starts in rented colo (live month 6); a dedicated campus is built for Vera Rubin. This is a MEMBER COST SCHEDULE - outbound cash only, no revenue modelled. Full engine: jv_economics_v4.csv. Supersedes v3 files.",,,
+,,,
+1. THE BUILD - firm program T1-T5 (~100MW) + options,,,
+Tranche,Platform (where),GPUs bought,Compute live
+T1,GB300 NVL72 (rented colo),m0,m6
+T2,GB300 NVL72 (rented colo),m6,m12
+T3,Vera Rubin NVL72 (own campus - built m0-m21),m15,m21
+T4,Vera Rubin NVL72 (own campus - m6-m27),m21,m27
+T5,Vera Rubin NVL72 (own campus - m12-m33),m27,m33
+T6-T7,OPTIONS - Rubin Ultra or best-then-available; priced only at NVIDIA spec freeze + vendor quotes,TBD,TBD
+,,,
+2. WHAT EACH MEMBER PAYS (per sleeve = 1/3 of a tranche; $M),,,
+,GB300 sleeve (x2),Vera Rubin sleeve (x3),
+Buy-in (37% equity deposit),98,142,
+5-year loan (remainder; simplified single facility),168,241,
+Loan rate,9.5%,8.5%,
+Interest over the loan,44,56,
+Running cost per year (colo/power/facility/maintenance),24,19,
+"All-in 5-year cost (capex + interest + running)",431,531,
+Refresh reserve (restricted savings for the year-5 refresh; memo),"~$93M over yrs 2-5","~$103M over yrs 2-5",
+,,,
+"GB300 capex is built bottom-up: $4.0M/rack (street estimate) + fabric/storage/spares + software/freight/install/VAT-carry/contingency = $5.54M/rack fully loaded ($266M/member; band $244-294M). Pending OEM quote.",,,
+"Financing note: the 63% single loan is the agreed simplification. The detailed alternative splits it into 42% senior GPU debt + 23% vendor finance (35% equity) with separate terms - used at term-sheet stage.",,,
+,,,
+3. WHAT EACH MEMBER GETS (per sleeve),,,
+,GB300 sleeve,Vera Rubin sleeve,
+GPU packages,"3,456","2,160",
+Dense FP8 compute (exaflops),17.3,37.8,
+"Compute per MW vs GB300 (dense FP8)",1.0x,~2.19x,
+,,,
+4. WHAT THE COMPUTE COSTS (5-year all-in; at 90% billed availability),,,
+,GB300 sleeve,Vera Rubin sleeve,Blended T1-T5
+$ per GPU-hour,3.16,6.23,-
+$ per GB300-equivalent GPU-hour,3.16,1.78,2.10
+$ per PFLOPS-hour (dense FP8),0.63,0.36,0.42
+$ per normalized GB300-Watt per month,1.05,0.59,0.70
+Merchant market reference (GB300-class reserved),~$5-8 per GPU-hour,,
+,,,
+5. FIRM PROGRAM TOTALS (T1-T5),,Per member,Whole JV (x3)
+Capital spend (GPUs + campus share),,"$1.68B","$5.0B"
+- of which equity checks,,"$0.62B","$1.9B"
+- of which 5-year loans,,"$1.06B","$3.2B"
+Interest paid over the loans,,"$0.25B","$0.8B"
+Running costs (5 years per sleeve),,"$0.52B","$1.6B"
+TOTAL 5-YEAR COST,,"$2.45B","$7.4B"
+Dense FP8 installed,,148 EF,444 EF
+Blended cost per GB300-equivalent GPU-hour (90%),,$2.10,$2.10
+Cash in year one (equity + loan payments + running),,"~$0.34B",~$1.0B
+Refresh reserve accumulated by yr 5 (restricted; memo),,"~$0.49B",~$1.5B
+"THERE IS NO T1-T7 TOTAL: T6-T7 are unpriced options.",,,
+,,,
+6. NOTES (status of every number),,,
+"Nothing here is an executed quote. GB300 rack $4.0M is a street-band estimate (Loop Capital $3.7-4.0M); Rubin $8.5Mx1.15 is the conservative complete case (low case $7.8M configured); PropCo $267.5M/block from Turner&Townsend Paris benchmarks + owner costs (range $260-275M).",,,
+"Dense FP8 basis: GB300 360 PF/rack (720 sparse halved), Rubin 1,260 PF/rack -> 3.50x per GPU, ~2.19x per equal MW. FP4 marketing flops not used. 'Normalized GB300-Watt' = watts of GB300 delivering the same dense FP8.",,,
+"Electricity: nameplate x PUE 1.20 x 90% electrical load factor x EUR90/MWh all-in-delivered planning case x $1.143/EUR (ECB). EUR70 commodity is not an all-in price. Colo $130/kW-mo billed on 1/3 of a 20MW reservation (sensitivities 130/155/180).",,,
+"Timing scenarios: GB300 order-to-live 6mo base (16wk only if colo + allocation fully ready; 8-10mo downside). Rubin construction 21mo modelled (fast-track site); 22-24mo standard base would shift T3 to ~m24 and T5 to ~m36.",,,
+"Site: to be selected - subject to executed exclusivity, grid-connection offer, permits, water/fibre/geotech diligence. No RTE entitlement claimed. EU/French public capital (up to ~17% of eligible capex) is UPSIDE ONLY - the base assumes zero subsidy.",,,
+"Interest starts at GPU purchase: each GB300 sleeve pays ~$8M interest during the 6-month rack-up before compute. Not netted: 10% chip residual memo (~$0.11B/member) and PropCo residual life (~12yrs at schedule end).",,,
+"Members commit via two-leg take-or-pay (reserved-capacity fee payable irrespective of usage) with backer credit support (LC/guarantee) - the basis on which lenders underwrite.",,,

@@ -1,0 +1,271 @@
+<title>JV3 — Three-Member Self-Guaranteed Compute JV</title>
+<style>
+  :root {
+    --paper: #ECEEEF;
+    --paper-2: #E3E6E7;
+    --ink: #10151C;
+    --slate: #1A232C;
+    --slate-2: #243039;
+    --steel: #5E6B77;
+    --steel-light: #8A97A2;
+    --line: #D3D7DA;
+    --line-dark: #33414C;
+    --copper: #BE7233;
+    --copper-bright: #D89154;
+    --copper-wash: #FBF3EA;
+    --offwhite: #E9EBED;
+
+    --grotesk: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    --serif: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+    --mono: ui-monospace, "SF Mono", "Cascadia Code", "Consolas", monospace;
+  }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--paper); color:var(--ink); font-family:var(--grotesk); font-size:16px; line-height:1.6; -webkit-font-smoothing:antialiased; }
+  .wrap { max-width:1080px; margin:0 auto; padding:0 28px; }
+
+  .eyebrow { font-family:var(--mono); font-size:0.7rem; letter-spacing:0.16em; text-transform:uppercase; color:var(--copper); margin:0 0 14px; display:flex; align-items:center; gap:10px; }
+  .eyebrow::after { content:""; height:1px; flex:1; background:var(--line); }
+
+  /* header band */
+  .band { background:var(--slate); color:var(--offwhite);
+    background-image:
+      linear-gradient(transparent 0 calc(100% - 1px), rgba(255,255,255,0.04) calc(100% - 1px)),
+      linear-gradient(90deg, transparent 0 calc(100% - 1px), rgba(255,255,255,0.04) calc(100% - 1px));
+    background-size:100% 34px, 34px 100%;
+    border-bottom:2px solid var(--copper); }
+  .band .wrap { padding-top:46px; padding-bottom:40px; }
+  .kicker { font-family:var(--mono); font-size:0.72rem; letter-spacing:0.22em; text-transform:uppercase; color:var(--steel-light); margin:0 0 18px; }
+  h1 { font-weight:650; font-size:clamp(2rem,5.2vw,3.2rem); line-height:1.03; letter-spacing:-0.02em; margin:0; text-wrap:balance; }
+  h1 .hl { color:var(--copper-bright); }
+  .thesis { font-family:var(--serif); font-size:clamp(1.15rem,2.5vw,1.55rem); line-height:1.42; color:#C9CFD4; max-width:44ch; margin:18px 0 0; font-style:italic; }
+
+  .metrics { display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:var(--line-dark); border:1px solid var(--line-dark); margin-top:34px; }
+  .metric { background:var(--slate-2); padding:18px 18px 16px; }
+  .metric .v { font-family:var(--mono); font-size:clamp(1.4rem,3.4vw,2.05rem); font-weight:600; letter-spacing:-0.01em; color:#fff; font-variant-numeric:tabular-nums; line-height:1; }
+  .metric .v .u { color:var(--copper-bright); font-size:0.62em; }
+  .metric .k { font-family:var(--mono); font-size:0.66rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--steel-light); margin-top:9px; }
+
+  section { padding:44px 0; border-bottom:1px solid var(--line); }
+  section:last-of-type { border-bottom:0; }
+  h2 { font-size:1.4rem; font-weight:640; letter-spacing:-0.015em; margin:0 0 6px; text-wrap:balance; }
+  .lede { font-family:var(--serif); font-size:1.08rem; line-height:1.5; color:#2c353d; max-width:64ch; margin:0 0 26px; }
+  p { max-width:64ch; }
+  .muted { color:var(--steel); }
+
+  /* what's different — compare */
+  .compare { display:grid; grid-template-columns:1fr 1fr; gap:1px; background:var(--line); border:1px solid var(--line); }
+  .compare > div { background:#fff; padding:18px 20px; }
+  .compare .base { background:var(--paper-2); }
+  .compare h3 { font-family:var(--mono); font-size:0.68rem; letter-spacing:0.1em; text-transform:uppercase; margin:0 0 12px; color:var(--steel); }
+  .compare .jv3 h3 { color:var(--copper); }
+  .compare ul { margin:0; padding-left:18px; font-size:0.92rem; }
+  .compare li { margin-bottom:7px; }
+  .compare .jv3 li b { color:var(--ink); }
+
+  /* capacity phase cards */
+  .ribbon { font-family:var(--mono); font-size:0.74rem; letter-spacing:0.06em; color:var(--copper); background:var(--copper-wash); border:1px solid #EAD7C2; padding:8px 14px; display:inline-block; margin-bottom:18px; }
+  .phasecards { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
+  .pc { border:1px solid var(--line); background:#fff; padding:18px; }
+  .pc .step { font-family:var(--mono); font-size:0.62rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--steel-light); }
+  .pc .pf { font-weight:640; margin:4px 0 14px; font-size:1.02rem; }
+  .pc .rk { font-family:var(--mono); font-size:2.4rem; font-weight:600; color:var(--copper); line-height:1; font-variant-numeric:tabular-nums; }
+  .pc .rl { font-family:var(--mono); font-size:0.62rem; letter-spacing:0.08em; text-transform:uppercase; color:var(--steel); margin:6px 0 12px; }
+  .pc .rackbar { height:8px; background:var(--paper-2); margin-bottom:14px; }
+  .pc .rackbar i { display:block; height:100%; background:var(--copper); }
+  .pc .spec { font-family:var(--mono); font-size:0.72rem; color:var(--steel); border-top:1px solid var(--line); padding-top:10px; display:flex; flex-direction:column; gap:3px; }
+  .pc .spec b { color:var(--ink); }
+
+  /* sleeves diagram */
+  .sleeves { border:1px solid var(--ink); }
+  .sleeve-row { display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--line); }
+  .sleeve { background:#fff; padding:16px; border-top:3px solid var(--copper); }
+  .sleeve .m { font-weight:640; font-size:0.95rem; }
+  .sleeve .d { font-family:var(--mono); font-size:0.72rem; color:var(--steel); margin-top:6px; line-height:1.4; }
+  .sleeve .d b { color:var(--copper); }
+  .propco { background:var(--slate); color:var(--offwhite); padding:14px 16px; font-family:var(--mono); font-size:0.78rem; letter-spacing:0.02em; text-align:center; }
+  .propco b { color:#fff; }
+
+  /* capital stack */
+  .cols { display:grid; grid-template-columns:1fr 1fr; gap:40px; }
+  .stack { display:flex; width:100%; height:60px; border:1px solid var(--ink); overflow:hidden; font-family:var(--mono); }
+  .stack .seg { display:flex; flex-direction:column; justify-content:center; padding:0 14px; color:#fff; min-width:0; }
+  .stack .seg .pct { font-size:1.02rem; font-weight:600; }
+  .stack .seg .lbl { font-size:0.58rem; letter-spacing:0.06em; text-transform:uppercase; opacity:0.85; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .seg.equity { background:var(--copper); }
+  .seg.gpu { background:var(--slate); }
+  .seg.vendor { background:var(--steel); }
+  .stack-key { display:flex; flex-wrap:wrap; gap:12px 22px; margin-top:14px; font-family:var(--mono); font-size:0.72rem; color:var(--steel); }
+  .stack-key .it { display:flex; align-items:center; gap:8px; }
+  .stack-key .sw { width:11px; height:11px; display:inline-block; }
+
+  /* chips */
+  .chips { display:flex; flex-wrap:wrap; gap:10px; margin-top:6px; }
+  .chip { border:1px solid var(--copper); color:var(--ink); background:var(--copper-wash); font-size:0.82rem; padding:7px 12px; }
+  .chip b { color:var(--copper); }
+
+  /* tables */
+  .tbl-wrap { overflow-x:auto; }
+  table { border-collapse:collapse; width:100%; font-size:0.9rem; }
+  th, td { text-align:left; padding:10px 14px; border-bottom:1px solid var(--line); vertical-align:top; }
+  th { font-family:var(--mono); font-size:0.64rem; letter-spacing:0.08em; text-transform:uppercase; color:var(--steel); font-weight:600; border-bottom:1px solid var(--ink); }
+  td .num { font-family:var(--mono); font-variant-numeric:tabular-nums; }
+  tr td:first-child { font-weight:560; }
+  td.hl { color:var(--copper); font-family:var(--mono); font-weight:600; }
+
+  .gate { background:var(--slate); color:var(--offwhite); padding:20px 22px; margin-top:26px; border-left:3px solid var(--copper); }
+  .gate b { color:#fff; }
+  footer { padding:26px 0 40px; font-family:var(--mono); font-size:0.7rem; color:var(--steel); line-height:1.6; }
+
+  @media (max-width:760px){
+    .metrics{ grid-template-columns:repeat(2,1fr); }
+    .compare{ grid-template-columns:1fr; }
+    .phasecards{ grid-template-columns:1fr; }
+    .sleeve-row{ grid-template-columns:1fr; }
+    .cols{ grid-template-columns:1fr; gap:28px; }
+  }
+  @media (prefers-reduced-motion:reduce){ *{ scroll-behavior:auto; } }
+</style>
+
+<div class="band">
+  <div class="wrap">
+    <p class="kicker">Confidential · Structure Variant "JV3" · For Discussion Only</p>
+    <h1>JV3 — three members who <span class="hl">guarantee their own demand</span></h1>
+    <p class="thesis">A captive compute cooperative: three equal partners build, own, and consume the capacity — each taking 48 GB300 racks (~7MW), then the power-equivalent in Vera Rubin. No external anchor required.</p>
+    <div class="metrics">
+      <div class="metric"><div class="v">3</div><div class="k">Equal members · self-offtake</div></div>
+      <div class="metric"><div class="v">~7<span class="u">MW</span></div><div class="k">Per member · per tranche</div></div>
+      <div class="metric"><div class="v">~147<span class="u">MW</span></div><div class="k">7 tranches · GB300→Rubin</div></div>
+      <div class="metric"><div class="v">100<span class="u">%</span></div><div class="k">Demand self-guaranteed</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <section>
+    <p class="eyebrow">What changes vs the base plan</p>
+    <h2>Two moves define JV3</h2>
+    <p class="lede">Drop from four members to three, and let the members themselves guarantee the demand instead of anchoring on a Meta/Nebius take-or-pay. It's a clean trade: no external-anchor dependency and 100% of the economics retained — paid for with a weaker (sub-investment-grade) debt credit that has to be shored up.</p>
+    <div class="compare">
+      <div class="base">
+        <h3>Base plan (JV1/JV2)</h3>
+        <ul class="muted">
+          <li>4 members</li>
+          <li>Demand: captive + <b>Meta/Nebius IG anchor</b> + merchant</li>
+          <li>Debt anchored on Meta's investment-grade credit</li>
+          <li>~27% equity; senior advance ~55–60%</li>
+          <li>Must land an anchor LOI to close debt</li>
+        </ul>
+      </div>
+      <div class="jv3">
+        <h3>JV3</h3>
+        <ul>
+          <li><b>3 equal members</b>, each controls & funds its sleeve</li>
+          <li>Demand: <b>100% self-guaranteed</b> by the members</li>
+          <li>Debt on sub-IG offtake + <b>credit enhancement</b></li>
+          <li><b>~40% equity</b>; credit-enhanced advance ~40–50%</li>
+          <li>Gate shifts to <b>VC-backer credit support</b></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <p class="eyebrow">Capacity architecture</p>
+    <h2>Constant 7MW per member — fewer, denser racks each generation</h2>
+    <p class="lede">Each member holds the same ~7MW slice in every tranche. As rack density climbs from GB300 to Rubin to Rubin Ultra, the rack count per member collapses while GPUs-per-rack rise sharply — the same power, radically more compute.</p>
+    <span class="ribbon">▸ ≈ 7 MW / member — held constant across all three platforms</span>
+    <div class="phasecards">
+      <div class="pc">
+        <div class="step">Phase 1 · now</div>
+        <div class="pf">GB300 NVL72</div>
+        <div class="rk">48</div><div class="rl">racks / member</div>
+        <div class="rackbar"><i style="width:100%"></i></div>
+        <div class="spec"><span>~145 kW / rack</span><span><b>72</b> GPUs / rack</span><span>3-member tranche: <b>144 racks · ~21MW</b></span></div>
+      </div>
+      <div class="pc">
+        <div class="step">Phase 2</div>
+        <div class="pf">Vera Rubin NVL72</div>
+        <div class="rk">~35</div><div class="rl">racks / member</div>
+        <div class="rackbar"><i style="width:73%"></i></div>
+        <div class="spec"><span>~200 kW / rack</span><span><b>72</b> GPUs / rack</span><span>3-member tranche: <b>105 racks · ~21MW</b></span></div>
+      </div>
+      <div class="pc">
+        <div class="step">Phase 3</div>
+        <div class="pf">Vera Rubin Ultra NVL576 · Kyber</div>
+        <div class="rk">~12</div><div class="rl">racks / member</div>
+        <div class="rackbar"><i style="width:25%"></i></div>
+        <div class="spec"><span>~600 kW / rack · 800VDC</span><span><b>576</b> GPUs / rack</span><span>3-member tranche: <b>36 racks · ~21.6MW</b></span></div>
+      </div>
+    </div>
+    <p class="muted" style="font-size:0.86rem;margin-top:16px">Per member over the program: ~225 racks, ~49MW, ~28,300 GPUs. Build the shell <b>800VDC-ready from day one</b> so the NVL576 tranches drop into reserved corridors. Rack-power/GPU figures are planning assumptions; NVL576/Kyber is preliminary per NVIDIA.</p>
+  </section>
+
+  <section>
+    <p class="eyebrow">Structure</p>
+    <h2>Three sleeves on one shared campus</h2>
+    <p class="lede">Each member's 48 racks and its own take-or-pay sit in a dedicated ChipCo sleeve, so a member's guarantee backs only its own debt. The powered shell, grid and cooling are a shared PropCo, cost-split in equal thirds. A stumble in one sleeve is isolated — it can be re-marketed or bought out without touching the others.</p>
+    <div class="sleeves">
+      <div class="sleeve-row">
+        <div class="sleeve"><div class="m">Member A</div><div class="d">48 racks · ~7MW<br><b>own take-or-pay + guarantee</b></div></div>
+        <div class="sleeve"><div class="m">Member B</div><div class="d">48 racks · ~7MW<br><b>own take-or-pay + guarantee</b></div></div>
+        <div class="sleeve"><div class="m">Member C</div><div class="d">48 racks · ~7MW<br><b>own take-or-pay + guarantee</b></div></div>
+      </div>
+      <div class="propco"><b>Shared PropCo</b> — powered shell · grid · cooling · campus &nbsp;·&nbsp; cost-split 1/3 · long infra debt</div>
+    </div>
+    <p class="muted" style="font-size:0.86rem;margin-top:14px">Governance: equal thirds, per-sleeve autonomy, 2-of-3 supermajority on shared matters, with a buy-sell to break a 2-1 deadlock.</p>
+  </section>
+
+  <section>
+    <p class="eyebrow">The financing crux</p>
+    <h2>Self-guaranteed demand is certain — but sub-investment-grade</h2>
+    <p class="lede">The members are the demand, so utilization is locked in — but they're VC-backed labs, where CoreWeave's debt leaned on Microsoft's investment-grade backlog. JV3 has to manufacture credit around the members' guarantees, and carry more equity.</p>
+    <div class="cols">
+      <div>
+        <p class="eyebrow">Credit enhancement — how sub-IG offtake is made bankable</p>
+        <div class="chips">
+          <span class="chip"><b>Several</b> member guarantees</span>
+          <span class="chip"><b>6–12mo</b> capacity prepayment → DSRA</span>
+          <span class="chip"><b>VC-backer</b> LCs / guarantees / equity</span>
+          <span class="chip"><b>NVIDIA</b> capacity backstop</span>
+          <span class="chip">Over-collateralization</span>
+        </div>
+        <p class="muted" style="font-size:0.9rem;margin-top:18px">Concentration is ~33% per member — better than CoreWeave's 62–67% single-tenant, but the three are correlated (all AI labs, same cycle), so lenders apply a correlation haircut. Sleeve isolation + the NVIDIA backstop are what hold the structure. An optional Meta/Nebius anchor or merchant book can be grafted onto a tranche to <em>buy back</em> leverage.</p>
+      </div>
+      <div>
+        <p class="eyebrow">Per-member GB300 sleeve · ~€330M (7MW)</p>
+        <div class="stack">
+          <div class="seg equity" style="flex-basis:40%"><span class="pct">40%</span><span class="lbl">Equity</span></div>
+          <div class="seg gpu" style="flex-basis:40%"><span class="pct">40%</span><span class="lbl">GPU debt (enhanced)</span></div>
+          <div class="seg vendor" style="flex-basis:20%"><span class="pct">20%</span><span class="lbl">Vendor finance</span></div>
+        </div>
+        <div class="stack-key">
+          <span class="it"><i class="sw" style="background:var(--copper)"></i>Member + VC-backer equity (~€130M)</span>
+          <span class="it"><i class="sw" style="background:var(--slate)"></i>Credit-enhanced senior (~€130M)</span>
+          <span class="it"><i class="sw" style="background:var(--steel)"></i>NVIDIA / OEM (~€65M)</span>
+        </div>
+        <p class="muted" style="font-size:0.9rem;margin-top:16px"><b>Upfront cash per member ≈ €50–120M</b> for its first 7MW (dev share + GPU deposit + equity draw). Shared PropCo (~€77M/member) is financed separately at ~65% infra debt.</p>
+      </div>
+    </div>
+    <div class="tbl-wrap" style="margin-top:26px">
+      <table>
+        <thead><tr><th>Same 7MW slice</th><th>Meta-anchored (base)</th><th>JV3 self-guaranteed</th></tr></thead>
+        <tbody>
+          <tr><td>Equity</td><td class="num">~27%</td><td class="hl">~40%</td></tr>
+          <tr><td>Senior debt advance</td><td class="num">~55–60%</td><td class="hl">~40–50%, enhanced</td></tr>
+          <tr><td>Debt cost</td><td>toward investment grade</td><td class="hl">higher (sub-IG + correlation)</td></tr>
+          <tr><td>Anchor dependency</td><td>high — must land Meta</td><td class="hl">none — must credit-enhance</td></tr>
+          <tr><td>Economics retained</td><td>shared with anchor</td><td class="hl">100% with members</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="gate">
+      <b>Gating item:</b> JV3 replaces "land an anchor LOI" with "<b>secure VC-backer credit support behind each member's take-or-pay</b>." That, plus the NVIDIA capacity backstop and confirmed 144-rack GB300 allocation, is what unlocks the first tranche.
+    </div>
+  </section>
+
+  <footer>
+    JV3 — three-member self-guaranteed variant of Project Ampère · Indicative and confidential · Not an offer or financing commitment. Rack-power/GPU figures are planning assumptions (NVL576/Kyber preliminary per NVIDIA); financing ranges to be replaced by member/backer credit support, NVIDIA allocation + backstop, EPC bids and lender term sheets. Precedents: CoreWeave (SEC), Meta-Hyperion, Nebius, and the sourced comparables file.
+  </footer>
+
+</div>

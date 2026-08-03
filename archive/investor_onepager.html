@@ -1,0 +1,392 @@
+<title>Project Ampère — 140MW France AI Factory JV</title>
+<style>
+  :root {
+    --paper: #ECEEEF;
+    --paper-2: #E3E6E7;
+    --ink: #10151C;
+    --slate: #1A232C;
+    --slate-2: #243039;
+    --steel: #5E6B77;
+    --steel-light: #8A97A2;
+    --line: #D3D7DA;
+    --line-dark: #33414C;
+    --copper: #BE7233;
+    --copper-bright: #D89154;
+    --offwhite: #E9EBED;
+    --good: #4E7C59;
+
+    --grotesk: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    --serif: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+    --mono: ui-monospace, "SF Mono", "Cascadia Code", "Consolas", monospace;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--grotesk);
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 28px; }
+
+  /* ---------- eyebrow / labels ---------- */
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--copper);
+    margin: 0 0 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .eyebrow::after {
+    content: "";
+    height: 1px;
+    flex: 1;
+    background: var(--line);
+  }
+
+  /* ---------- spec header band ---------- */
+  .band {
+    background: var(--slate);
+    color: var(--offwhite);
+    background-image:
+      linear-gradient(transparent 0 calc(100% - 1px), rgba(255,255,255,0.04) calc(100% - 1px)),
+      linear-gradient(90deg, transparent 0 calc(100% - 1px), rgba(255,255,255,0.04) calc(100% - 1px));
+    background-size: 100% 34px, 34px 100%;
+    border-bottom: 2px solid var(--copper);
+  }
+  .band .wrap { padding-top: 46px; padding-bottom: 40px; }
+
+  .kicker {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--steel-light);
+    margin: 0 0 18px;
+  }
+  h1 {
+    font-family: var(--grotesk);
+    font-weight: 650;
+    font-size: clamp(2rem, 5.2vw, 3.3rem);
+    line-height: 1.02;
+    letter-spacing: -0.02em;
+    margin: 0 0 6px;
+    text-wrap: balance;
+  }
+  h1 .loc { color: var(--copper-bright); }
+  .thesis {
+    font-family: var(--serif);
+    font-size: clamp(1.15rem, 2.5vw, 1.6rem);
+    line-height: 1.42;
+    color: #C9CFD4;
+    max-width: 40ch;
+    margin: 18px 0 0;
+    font-style: italic;
+  }
+
+  /* ---------- metric row ---------- */
+  .metrics {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--line-dark);
+    border: 1px solid var(--line-dark);
+    margin-top: 34px;
+  }
+  .metric { background: var(--slate-2); padding: 18px 18px 16px; }
+  .metric .v {
+    font-family: var(--mono);
+    font-size: clamp(1.4rem, 3.4vw, 2.1rem);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: #fff;
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+  }
+  .metric .v .u { color: var(--copper-bright); font-size: 0.62em; }
+  .metric .k {
+    font-family: var(--mono);
+    font-size: 0.66rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--steel-light);
+    margin-top: 9px;
+  }
+
+  /* ---------- sections ---------- */
+  section { padding: 44px 0; border-bottom: 1px solid var(--line); }
+  section:last-of-type { border-bottom: 0; }
+  h2 {
+    font-size: 1.4rem;
+    font-weight: 640;
+    letter-spacing: -0.015em;
+    margin: 0 0 6px;
+    text-wrap: balance;
+  }
+  .lede {
+    font-family: var(--serif);
+    font-size: 1.08rem;
+    line-height: 1.5;
+    color: #2c353d;
+    max-width: 62ch;
+    margin: 0 0 26px;
+  }
+  p { max-width: 64ch; }
+  .muted { color: var(--steel); }
+
+  /* ---------- capital stack bar ---------- */
+  .stack {
+    display: flex;
+    width: 100%;
+    height: 64px;
+    border: 1px solid var(--ink);
+    overflow: hidden;
+    font-family: var(--mono);
+  }
+  .stack .seg {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0 14px;
+    color: #fff;
+    min-width: 0;
+  }
+  .stack .seg .pct { font-size: 1.05rem; font-weight: 600; font-variant-numeric: tabular-nums; }
+  .stack .seg .lbl { font-size: 0.6rem; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.85; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .seg.equity { background: var(--copper); }
+  .seg.gpu { background: var(--slate); }
+  .seg.vendor { background: var(--steel); }
+  .seg.infra { background: #3C4A55; }
+  .stack-key { display:flex; flex-wrap:wrap; gap:18px 26px; margin-top:16px; font-family:var(--mono); font-size:0.74rem; color:var(--steel); }
+  .stack-key .it { display:flex; align-items:center; gap:8px; }
+  .stack-key .sw { width:11px; height:11px; display:inline-block; }
+
+  /* ---------- two-col ---------- */
+  .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+  .card-note {
+    border-left: 2px solid var(--copper);
+    padding: 4px 0 4px 18px;
+    margin: 22px 0 0;
+  }
+  .card-note .t { font-weight: 640; margin-bottom: 4px; }
+
+  /* ---------- tranche sequence ---------- */
+  .tranches { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; }
+  .tr {
+    border: 1px solid var(--line);
+    background: #fff;
+    padding: 14px 10px 12px;
+    position: relative;
+  }
+  .tr.gb { border-color: var(--copper); }
+  .tr .id { font-family: var(--mono); font-size: 0.72rem; font-weight:600; letter-spacing:0.06em; }
+  .tr .pf { font-size: 0.74rem; line-height:1.25; margin-top: 6px; color: var(--steel); }
+  .tr .mw { font-family: var(--mono); font-size: 0.92rem; font-weight:600; margin-top:8px; font-variant-numeric: tabular-nums; }
+  .tr .yr { font-family: var(--mono); font-size: 0.64rem; color: var(--steel-light); margin-top:3px; }
+  .tr.gb .tag { position:absolute; top:-1px; right:-1px; background:var(--copper); color:#fff; font-family:var(--mono); font-size:0.54rem; letter-spacing:0.08em; padding:2px 6px; text-transform:uppercase; }
+  .phase-labels { display:grid; grid-template-columns: 2fr 5fr; gap:6px; margin-bottom:8px; font-family:var(--mono); font-size:0.64rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--steel); }
+  .phase-labels span { padding:4px 8px; background:var(--paper-2); }
+
+  /* ---------- recycle flow ---------- */
+  .flow { display:flex; align-items:stretch; gap:0; flex-wrap:wrap; font-family:var(--mono); }
+  .flow .node {
+    flex:1; min-width:120px; background:#fff; border:1px solid var(--line);
+    padding:14px 12px; font-size:0.74rem; line-height:1.3;
+  }
+  .flow .node .n { font-size:0.6rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--copper); margin-bottom:6px; }
+  .flow .arrow { display:flex; align-items:center; color:var(--copper); font-size:1.1rem; padding:0 8px; }
+  .flow .node.ret { border-color: var(--copper); border-width:1px; background: #FBF3EA; }
+
+  /* ---------- tables ---------- */
+  .tbl-wrap { overflow-x: auto; }
+  table { border-collapse: collapse; width: 100%; font-size: 0.9rem; }
+  th, td { text-align: left; padding: 11px 14px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th {
+    font-family: var(--mono); font-size: 0.66rem; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--steel); font-weight: 600;
+    border-bottom: 1px solid var(--ink);
+  }
+  td .num, .num { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+  tr td:first-child { font-weight: 560; }
+  .credit { font-family:var(--mono); font-size:0.66rem; letter-spacing:0.04em; text-transform:uppercase; padding:2px 7px; display:inline-block; }
+  .credit.ig { background:#23351f; color:#cfe3c6; }
+  .credit.mid { background:#2c2417; color:#e6d2af; }
+  .credit.low { background:#33252a; color:#e9c3cd; }
+  .credit.zero { background:var(--paper-2); color:var(--steel); }
+
+  /* ---------- steps ---------- */
+  ol.steps { list-style:none; counter-reset: s; padding:0; margin:0; display:grid; grid-template-columns:repeat(2,1fr); gap:14px 34px; }
+  ol.steps li { counter-increment:s; padding-left:42px; position:relative; }
+  ol.steps li::before {
+    content: counter(s, decimal-leading-zero);
+    position:absolute; left:0; top:1px;
+    font-family:var(--mono); font-size:0.8rem; color:var(--copper);
+    border:1px solid var(--copper); width:28px; height:28px;
+    display:flex; align-items:center; justify-content:center;
+  }
+  ol.steps li .st { font-weight:620; }
+  ol.steps li .sd { font-size:0.88rem; color:var(--steel); }
+
+  .gate { background:var(--slate); color:var(--offwhite); padding:20px 22px; margin-top:26px; border-left:3px solid var(--copper); }
+  .gate b { color:#fff; }
+
+  footer { padding:26px 0 40px; font-family:var(--mono); font-size:0.7rem; color:var(--steel); line-height:1.6; }
+
+  @media (max-width: 720px) {
+    .metrics { grid-template-columns: repeat(2,1fr); }
+    .cols { grid-template-columns: 1fr; gap:28px; }
+    .tranches { grid-template-columns: repeat(2,1fr); }
+    .phase-labels { display:none; }
+    ol.steps { grid-template-columns:1fr; }
+    .flow .arrow { transform: rotate(90deg); width:100%; justify-content:center; }
+    .flow .node { min-width: 100%; }
+  }
+  @media (prefers-reduced-motion: reduce) { * { scroll-behavior:auto; } }
+</style>
+
+<div class="band">
+  <div class="wrap">
+    <p class="kicker">Confidential · Project-Finance Teaser · For Discussion Only</p>
+    <h1>Project Ampère — a 140MW AI factory in <span class="loc">France</span></h1>
+    <p class="thesis">Seven ring-fenced tranches. GB300 now, Vera Rubin next. Financed the way the market already proved with CoreWeave, Meta-Hyperion and xAI — equity downpayment, GPU-backed senior debt, ABS take-out.</p>
+
+    <div class="metrics">
+      <div class="metric"><div class="v">140<span class="u">MW</span></div><div class="k">40 GB300 · 100 Vera Rubin</div></div>
+      <div class="metric"><div class="v">€6.8–9.5<span class="u">B</span></div><div class="k">All-in program capex</div></div>
+      <div class="metric"><div class="v">7<span class="u">×20MW</span></div><div class="k">Ring-fenced tranches</div></div>
+      <div class="metric"><div class="v">2026–29</div><div class="k">Phased energization</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <section>
+    <p class="eyebrow">The structure</p>
+    <h2>One program, financed as seven ~€1B tranches</h2>
+    <p class="lede">We are not financing a single €8B project. Each 20MW tranche is its own bankruptcy-remote SPV — non-recourse to the others and to the four sponsor members — split into a slow asset and a fast asset, sized for debt by the credit of its offtake, and refinanced once stabilized to recycle equity into the next.</p>
+
+    <div class="cols">
+      <div>
+        <div class="card-note"><div class="t">PropCo — the powered shell</div><div class="muted">~€220M, 10–15yr life. Long, cheap infrastructure debt at ~65% LTV, EURIBOR + 250–400bps.</div></div>
+        <div class="card-note"><div class="t">ChipCo — the GPUs</div><div class="muted">~€780M, 3–5yr life. Morgan Stanley-led senior GPU-backed debt + NVIDIA/OEM vendor finance. Borrowing base = depreciable GPU cost.</div></div>
+        <div class="card-note"><div class="t">OpCo — the operator</div><div class="muted">Signs take-or-pay with Meta/Nebius and arm's-length contracts with members. One revenue face; pays the SPVs.</div></div>
+      </div>
+      <div>
+        <p class="eyebrow">Representative ~€1.0B tranche</p>
+        <div class="stack">
+          <div class="seg equity" style="flex-basis:27%"><span class="pct">27%</span><span class="lbl">Equity</span></div>
+          <div class="seg gpu" style="flex-basis:43%"><span class="pct">43%</span><span class="lbl">GPU senior debt</span></div>
+          <div class="seg vendor" style="flex-basis:15%"><span class="pct">15%</span><span class="lbl">Vendor finance</span></div>
+          <div class="seg infra" style="flex-basis:15%"><span class="pct">15%</span><span class="lbl">Infra debt</span></div>
+        </div>
+        <div class="stack-key">
+          <span class="it"><i class="sw" style="background:var(--copper)"></i>Equity ≈ €272M — the "downpayment"</span>
+          <span class="it"><i class="sw" style="background:var(--slate)"></i>Senior, on the chips + receivables</span>
+          <span class="it"><i class="sw" style="background:var(--steel)"></i>NVIDIA / OEM lease</span>
+          <span class="it"><i class="sw" style="background:#3C4A55"></i>On the shell, long-dated</span>
+        </div>
+        <p class="muted" style="font-size:0.88rem;margin-top:18px">Blended ~73% debt / 27% equity. The slow asset and the fast asset never share a lender or a tenor.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <p class="eyebrow">The sequence</p>
+    <h2>GB300 first — the proof phase — then Vera Rubin at scale</h2>
+    <p class="lede">GB300 ships now, generating revenue in 2026–27 that seasons the offtake and the debt. That track record makes the Vera Rubin debt larger and cheaper, and brings the infrastructure co-equity partner in at a higher mark. The shell is built 800VDC-ready so Rubin tranches drop into reserved corridors.</p>
+    <div class="phase-labels"><span>Proof phase · GB300</span><span>Scale phase · Vera Rubin NVL72</span></div>
+    <div class="tranches">
+      <div class="tr gb"><span class="tag">Live</span><div class="id">T1</div><div class="pf">GB300 NVL72</div><div class="mw">20MW</div><div class="yr">2026–27</div></div>
+      <div class="tr gb"><span class="tag">Live</span><div class="id">T2</div><div class="pf">GB300 NVL72</div><div class="mw">20MW</div><div class="yr">2027</div></div>
+      <div class="tr"><div class="id">T3</div><div class="pf">Vera Rubin</div><div class="mw">20MW</div><div class="yr">2027–28</div></div>
+      <div class="tr"><div class="id">T4</div><div class="pf">Vera Rubin</div><div class="mw">20MW</div><div class="yr">2028</div></div>
+      <div class="tr"><div class="id">T5</div><div class="pf">Vera Rubin</div><div class="mw">20MW</div><div class="yr">2028</div></div>
+      <div class="tr"><div class="id">T6</div><div class="pf">Vera Rubin</div><div class="mw">20MW</div><div class="yr">2028–29</div></div>
+      <div class="tr"><div class="id">T7</div><div class="pf">Vera Rubin</div><div class="mw">20MW</div><div class="yr">2029</div></div>
+    </div>
+  </section>
+
+  <section>
+    <p class="eyebrow">The engine</p>
+    <h2>How €100–300M funds a €7–8B build</h2>
+    <p class="lede">The consortium equity is revolving downpayment capital, not a cumulative bill. Each tranche is refinanced once it has 12–18 months of contracted history — returning a meaningful slice of equity to redeploy — while an infrastructure co-equity partner funds the bulk of the Vera Rubin phase. The sponsor keeps operator economics and promote.</p>
+    <div class="flow">
+      <div class="node"><div class="n">Deploy</div>~€272M equity into tranche SPV + GPU deposit</div>
+      <div class="arrow">→</div>
+      <div class="node"><div class="n">Build &amp; contract</div>Energize · sign take-or-pay · 12–18mo stabilize</div>
+      <div class="arrow">→</div>
+      <div class="node"><div class="n">Refinance / ABS</div>Upsize to ~75–80% leverage · KBRA/DBRS-rated take-out</div>
+      <div class="arrow">→</div>
+      <div class="node ret"><div class="n">Recycle</div>~€100–150M equity returned → next tranche</div>
+    </div>
+  </section>
+
+  <section>
+    <p class="eyebrow">The credit basis</p>
+    <h2>Debt is sized by the credit of the offtake — not by nameplate</h2>
+    <p class="lede">Demand is captive (the four members) + anchor take-or-pay (Meta, Nebius) + merchant backstop. We route the contracts deliberately: Meta's investment-grade take-or-pay anchors the cheapest, largest senior debt; member demand fills utilization once credit-supported by their backers; merchant is sized at zero for debt and accrues to equity.</p>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Offtake source</th><th>Counterparty credit</th><th>Role in the debt</th></tr></thead>
+        <tbody>
+          <tr><td>Meta — take-or-pay</td><td><span class="credit ig">Investment grade</span></td><td>Anchors the largest, cheapest senior tranches; pursue IG execution (the Hyperion lift)</td></tr>
+          <tr><td>Nebius — capacity contract</td><td><span class="credit mid">Strong NeoCloud</span></td><td>Supports senior debt at a spread; possible operating / merchant-resale partner</td></tr>
+          <tr><td>JV members</td><td><span class="credit low">VC-backed</span></td><td>Fills utilization; counts only when credit-supported by members' backers</td></tr>
+          <tr><td>Merchant resale</td><td><span class="credit zero">Uncontracted</span></td><td>Sized at zero for debt — pure equity upside</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <p class="eyebrow">The partners</p>
+    <h2>The sponsor holds all four legs — partners are financial &amp; commercial</h2>
+    <div class="cols">
+      <div>
+        <p style="margin-top:0">The consortium — <b>General Intuition, Gradium, AmiLabs, Aire</b> — already holds NVIDIA allocation, site &amp; power control, build-and-operate capability, and lead equity. We are the sponsor and integrator, so we recruit capital and offtake, not capability.</p>
+      </div>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Layer</th><th>Bring in</th></tr></thead>
+          <tbody>
+            <tr><td>Lead debt arranger</td><td>Morgan Stanley + a French/EU bank (SocGen / BNP / CACIB)</td></tr>
+            <tr><td>GPU / asset credit</td><td>Blackstone, Blue Owl, Carlyle, Magnetar, PIMCO, Ares</td></tr>
+            <tr><td>Vendor finance</td><td>NVIDIA backstop · HPE / Dell / Supermicro</td></tr>
+            <tr><td>Co-equity (Rubin phase)</td><td>Brookfield · DigitalBridge · MGX · Bpifrance / CDC</td></tr>
+            <tr><td>Anchor offtake</td><td>Meta · Nebius</td></tr>
+            <tr><td>Build / grid</td><td>CAP INGELEC · Eiffage · Schneider/Vertiv · RTE</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <p class="eyebrow">Getting started</p>
+    <h2>First 180 days</h2>
+    <ol class="steps">
+      <li><span class="st">Form &amp; mandate.</span> <span class="sd">Stand up TopCo + T1 SPVs; sign the JV agreement; mandate Morgan Stanley with a warehouse line in scope.</span></li>
+      <li><span class="st">Lock the anchor.</span> <span class="sd">Convert Meta / Nebius interest into take-or-pay LOIs — the gating document for senior debt.</span></li>
+      <li><span class="st">Site &amp; allocation.</span> <span class="sd">Sign exclusivity at Dunkerque or Le Bosquel; open RTE phasing; confirm GB300 allocation and deposit terms.</span></li>
+      <li><span class="st">Structure the money.</span> <span class="sd">Bankable model + IM; senior facility + warehouse; close €100–300M consortium equity; begin co-equity diligence.</span></li>
+    </ol>
+    <div class="gate">
+      <b>Two items gate everything:</b> a Meta/Nebius take-or-pay LOI before debt close, and the Morgan Stanley mandate before any capex is committed. Everything else sequences off those two.
+    </div>
+  </section>
+
+  <footer>
+    Project Ampère [working codename] · Indicative and confidential · Not an offer or a financing commitment. Figures are planning ranges synthesized from public comparables (CoreWeave SEC filings, Meta-Hyperion, xAI, Nebius, data-center ABS) and the program research; to be replaced by LOIs, RTE offers, NVIDIA allocation terms, EPC bids and lender term sheets before any investment decision.
+  </footer>
+
+</div>
